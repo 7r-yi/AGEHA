@@ -27,19 +27,19 @@ def id_search(str):
 
 def image_search(id):
     if 1 <= id <= 48:
-        return f'D:/Ren/Desktop/色々/Data/Discord/AGEHA Bot/Race_tracks/track_{id}.png'
+        return f'./Race_tracks/track_{id}.png'
     elif 101 <= id <= 108:
-        return f'D:/Ren/Desktop/色々/Data/Discord/AGEHA Bot/Battle_tracks/track_{id - 100}.png'
+        return f'./Battle_tracks/track_{id - 100}.png'
     elif 201 <= id <= 299:
-        return f'D:/Ren/Desktop/色々/Data/Discord/AGEHA Bot/NvK_tracks/track_{id - 200}.png'
+        return f'./NvK_tracks/track_{id - 200}.png'
     elif 301 <= id <= 348:
-        return f'D:/Ren/Desktop/色々/Data/Discord/AGEHA Bot/Shock_Star_tables/table_{id - 300}.jpg'
+        return f'./Shock_Star_tables/table_{id - 300}.jpg'
     elif 401 <= id <= 499:
-        return f'D:/Ren/Desktop/色々/Data/Discord/AGEHA Bot/NvK_Mii_images/mii_{id - 400}.png'
+        return f'./NvK_Mii_images/mii_{id - 400}.png'
     elif 501 <= id <= 599:
-        return f'D:/Ren/Desktop/色々/Data/Discord/AGEHA Bot/Race_tracks/track_{id - 500}.png'
+        return f'./Race_tracks/track_{id - 500}.png'
     elif 1001 <= id <= 1999:
-        return f'D:/Ren/Desktop/色々/Data/Discord/AGEHA Bot/Other_images/image_{id - 1000}.jpg'
+        return f'./Other_images/image_{id - 1000}.jpg'
 
 
 def track_conversion(pls):  # コースの大文字小文字などを修正
