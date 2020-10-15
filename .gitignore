@@ -1,4 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
-!/.env
-!/futsukin_bougen.json
-!/futsukin_meigen.json
+Backup/
+__pycache__/
+.env
+futsukin_bougen.json
+futsukin_meigen.json
