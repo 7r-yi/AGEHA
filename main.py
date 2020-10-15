@@ -265,9 +265,9 @@ async def on_message(ctx):
             id = id_conversion.id_search(ins.content[1:])
             id2 = id_conversion.id_search(ins2)
             if ins.content in ["_we", "_warend"]:
-                cnt = 999
-                make_table.flag_war_start = False
                 await ins.channel.send("記録を中断したお＾ｑ＾")
+                make_table.flag_war_start = False
+                return
             elif ins2 != "Not Found" or ins.content == "change":
                 if ins.content.startswith("_"):  # 自チームの指示コースを控える
                     j += 1
