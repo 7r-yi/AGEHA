@@ -52,7 +52,7 @@ async def on_message(ctx):
         if id != constant.Bad_Num:
             await ctx.channel.send(file=discord.File(id_conversion.image_search(id)))
 
-    if ctx.author.id == constant.Futsukin and "戦記事" in ctx.content:  # ふつきんがブログを更新した時
+    if ctx.author.id == constant.Futsukin and "戦記事" in ctx.content:  # Futsukinがブログを更新した時
         await ctx.channel.send("ブログ更新おつです＾ｑ＾")
         await ctx.add_reaction('George:353552599070539777')
 
