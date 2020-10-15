@@ -1,0 +1,2 @@
+cd D:\Ren\Desktop\êFÅX\Data\Discord bot
+python main.py
