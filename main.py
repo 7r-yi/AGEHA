@@ -322,20 +322,21 @@ async def on_message(ctx):
                     await ins.channel.send("それはコース名じゃないお＾ｑ＾")
 
     if ctx.content.split(" ")[0].lower() in ["_mt", "_maketable"]:  # 集計表作成コマンド
-        flag, key = 0, 0
+        flag = 0
         if make_table.import_track:
             await ctx.channel.send("直近の_warstartからコースと日付データをインポートしますか＾ｑ＾？(Yes/No)")
-            while key == 0:
+            while True:
                 yn = (await client.wait_for('message')).content
                 if yn.lower() == "yes":
-                    flag, key = 1, 1
+                    flag = 1
+                    break
                 elif yn.lower() == "no":
-                    key = 1
+                    break
                 else:
                     await ctx.channel.send("Yes or Noで解答してね＾ｑ＾")
         await ctx.channel.send(make_table.maketable_introduction(flag))
 
-        while key != 2:
+        while True:
             input = (await client.wait_for('message', check=user_check, timeout=600.0)).content
             check, msg = make_table.maketable_check_input(input, flag)
             if check:
@@ -343,11 +344,11 @@ async def on_message(ctx):
                 await client.get_channel(constant.Result).send(make_table.make_table(input, flag))
                 await client.get_channel(constant.Result).send(file=discord.File('created_sheet.png'))
                 os.remove('created_sheet.png')
-                key = 2
                 await ctx.channel.send("集計おつです＾ｑ＾\n集計表を作成したお＾ｑ＾")
+                return
             elif input.lower() == "cancel":
-                key = 2
                 await ctx.channel.send("集計表作成を中止したお＾ｑ＾")
+                return
             else:
                 await ctx.channel.send(f"形式が違うお＾ｑ＾\n{msg}")
 
