@@ -13,8 +13,7 @@ import lounge_data
 import mmr_calculate
 import make_table
 import meigen_list
-
-load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+import keep_alive
 client = discord.Client()
 
 
@@ -385,4 +384,6 @@ async def on_voice_state_update(_, before, after):
             json.dump(reset, file, ensure_ascii=False, indent=2)
 
 
+keep_alive.keep_alive()
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 client.run(os.environ.get('TOKEN'))
