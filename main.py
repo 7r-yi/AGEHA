@@ -14,7 +14,9 @@ import mmr_calculate
 import make_table
 import meigen_list
 import keep_alive
-client = discord.Client()
+intents = discord.Intents.default()
+intents.members = True
+client = discord.Client(intents=intents)
 
 
 @client.event
