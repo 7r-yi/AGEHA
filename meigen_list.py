@@ -1,5 +1,4 @@
 import random
-import json
 
 
 def futsukin_meigen():  # ふつきん名言を抽出
