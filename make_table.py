@@ -1,6 +1,5 @@
 import openpyxl
 from openpyxl.styles import Font
-import re
 import cv2
 from PIL import Image
 from pdf2image import convert_from_path
@@ -8,25 +7,18 @@ import numpy as np
 import os
 import win32com.client
 
-flag_war_start = False
-import_track = []
-clan_war_time = 0
 
-
-def maketable_introduction(flag):
+def maketable_introduction():
     msg = "集計表を作成するお＾ｑ＾(Cancelで作成中止)\n" \
           "```自チームのメンバー [ふつきん,P2,P3,P4,P5,P6]\n自チームの各得点 [80,80,80,80,80,80]\n\n" \
           "敵チーム名 [ABC]\n対戦回数 [1]\n" \
-          "敵チームのメンバー [P7,P8,P9,P10,P11,P12]\n敵チームの各得点 [80,80,80,80,80,80]"
+          "敵チームのメンバー [P7,P8,P9,P10,P11,P12]\n敵チームの各得点 [80,80,80,80,80,80]\n\n" \
+          "コース名 [T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]\n自チームの選択コース [1,2,3,4,5,6]\n\n日付 [2020/01/01]```"
 
-    if flag == 1:
-        return msg + "```※コースと交流戦日付は記入不要だお＾ｑ＾"
-    else:
-        return msg + "\n\nコース名 [T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]\n"\
-                     "自チームの選択コース [1,2,3,4,5,6]\n\n日付 [2020/01/01]```"
+    return msg
 
 
-def maketable_check_input(str, flag):
+def maketable_check_input(str):
     safe, msg = True, ""
     n1, n2 = str.count('['), str.count(']')
 
@@ -38,15 +30,11 @@ def maketable_check_input(str, flag):
             if (i != 5 and i != 7) and input[i].count(',') != 5:
                 safe = False
                 msg = "名前または得点が6つずつ入力されていないかも？＾ｑ＾"
-        if flag == 0 and safe:
+        if safe:
             if not input[13].count(',') == 11:
                 safe = False
             msg = "コースが12個入力されていないかも？＾ｑ＾"
-        if flag == 1 and safe:
-            if not n1 == 6 and n2 == 6:
-                safe = False
-            msg = "余計なデータがある or []で閉じられていない箇所があるかも？＾ｑ＾"
-        elif flag == 0 and safe:
+        if safe:
             if not n1 == 9 and n2 == 9:
                 safe = False
             msg = "余計なデータがある or []で閉じられていない箇所があるかも？＾ｑ＾"
@@ -57,7 +45,7 @@ def maketable_check_input(str, flag):
     return safe, msg
 
 
-def make_table(input, flag):
+def make_table(input):
     source_excel_pass = 'clanwar_table.xlsx'
     created_excel_pass = 'created_sheet.xlsx'
     pdf_pass = 'created_sheet.pdf'
@@ -87,26 +75,15 @@ def make_table(input, flag):
     for i in range(6):
         sheet.cell(9 + i, 6, int(enemy_point[i]))
 
-    if flag == 1:
-        for i in range(12):
-            if "__" in import_track[i]:
-                sheet.cell(3 + i, 12, re.sub('[_*]', "", import_track[i]))
+    track = input[13].split(',')
+    select_num = input[15].split(',')
+    for i in range(12):
+        sheet.cell(3 + i, 12, track[i])
+        for j in range(len(select_num)):
+            if i + 1 == int(select_num[j]):
                 cell = sheet.cell(row=3 + i, column=12).coordinate
                 sheet[cell].font = Font(color='00B0F0', size=26, name='Cataneo BT')
-            else:
-                sheet.cell(3 + i, 12, import_track[i])
-        global clan_war_time
-        date = clan_war_time
-    else:
-        track = input[13].split(',')
-        select_num = input[15].split(',')
-        for i in range(12):
-            sheet.cell(3 + i, 12, track[i])
-            for j in range(len(select_num)):
-                if i + 1 == int(select_num[j]):
-                    cell = sheet.cell(row=3 + i, column=12).coordinate
-                    sheet[cell].font = Font(color='00B0F0', size=26, name='Cataneo BT')
-        date = input[17]
+    date = input[17]
 
     if int(input[7]) == 1:
         send_str = f"vs {input[5]} - {date}"

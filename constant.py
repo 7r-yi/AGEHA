@@ -37,6 +37,7 @@ image_lineup = "```diff\n画像出力コマンド一覧(先頭に'_'を付けて
                "NvKtheme1, NvKtheme2, TeamNvK1, TeamNvK2, TeamNvK3, George, joris, Futoopa, Mogi, Neochi, MokoMoko, " \
                "temee, naide, FutsuFamily, FutamiGahaku, isogasui, HentaiAGEHA, korosuzo, U-N-CHI\n```"
 
+flag_war_start = False
 with open('call_backup.json') as file:
     call = json.load(file)
 if call['call_time'] is None:

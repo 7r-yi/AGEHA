@@ -11,9 +11,9 @@ import id_conversion
 import point_calculate
 import lounge_data
 import mmr_calculate
-import make_table
 import meigen_list
 import keep_alive
+
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
@@ -48,7 +48,7 @@ async def on_message(ctx):
         await ctx.channel.send(constant.command_lineup)
         await ctx.channel.send(constant.image_lineup)
 
-    if ctx.content.startswith("_") and not make_table.flag_war_start:  # 何かのメッセージが入力されたら実行
+    if ctx.content.startswith("_") and not constant.flag_war_start:  # 何かのメッセージが入力されたら実行
         id = id_conversion.id_search(ctx.content[1:])
         if id != constant.Bad_Num:
             await ctx.channel.send(file=discord.File(id_conversion.image_search(id)))
@@ -248,13 +248,12 @@ async def on_message(ctx):
                 flag = False
                 await ctx.channel.send("一定時間入力が無かったのでキャンセルされたお＾ｑ＾")
 
-    if ctx.content.split(" ")[0].lower() in ["_ws", "_warstart"] and not make_table.flag_war_start:  # 交流戦中の既出コース記録コマンド
+    if ctx.content.split(" ")[0].lower() in ["_ws", "_warstart"] and not constant.flag_war_start:  # 交流戦中の既出コース記録コマンド
         await ctx.add_reaction('⚔')
         await ctx.channel.send("選択されたコースの記録を開始するお＾ｑ＾")
-        make_table.flag_war_start = True
-        make_table.clan_war_time = datetime.now().strftime('%Y/%m/%d')
-        make_table.import_track = []
-        cnt, i, j, track, tmp1, tmp2, tmp3, tmp4, select = 1, 0, 0, [], [""] * 30, [""] * 30, [""] * 30, [""] * 30, ""
+        constant.flag_war_start = True
+        time = datetime.now().strftime('%Y/%m/%d')
+        cnt, i, j, track, tmp1, tmp2, select = 1, 0, 0, [], [""] * 30, [""] * 30, ""
 
         while cnt <= 12:  # 12回コースが記録されるまで
             try:
@@ -263,21 +262,18 @@ async def on_message(ctx):
                 await ctx.channel.send(f"{cnt}レース目のコース指示、入力し忘れてない？＾ｑ＾")
                 ins = await client.wait_for('message')
             ins2 = id_conversion.track_conversion(ins.content[1:])
-            id = id_conversion.id_search(ins.content[1:])
-            id2 = id_conversion.id_search(ins2)
+            id, id2 = id_conversion.id_search(ins.content[1:]), id_conversion.id_search(ins2)
             if ins.content in ["_we", "_warend"]:
                 await ins.channel.send("記録を中断したお＾ｑ＾")
-                make_table.flag_war_start = False
+                constant.flag_war_start = False
                 return
             elif ins2 != "Not Found" or ins.content == "change":
                 if ins.content.startswith("_"):  # 自チームの指示コースを控える
-                    j += 1
-                    tmp3[j] = await ins.channel.send(f"_**Race {cnt}, Please Select : {ins2}**_")
-                    tmp4[j] = await ins.channel.send(file=discord.File(id_conversion.image_search(id)))
+                    j, file = j + 1, discord.File(id_conversion.image_search(id))
+                    tmp2[j] = await ins.channel.send(f"_**Race {cnt}, Please Select : {ins2}**_", file=file)
                     await ins.delete()
                     if j != 1:
-                        await tmp3[j - 1].delete()
-                        await tmp4[j - 1].delete()
+                        await tmp2[j - 1].delete()
                     select = ins2
                 elif ins.content.startswith("+"):  # "+"で始まっている場合
                     cnt, i, = cnt + 1, i + 1  # ループカウント1回プラス
@@ -285,15 +281,13 @@ async def on_message(ctx):
                         track.append(f"__**{ins2}**__")  # 指定文字に太字下線と空白を追加
                     else:
                         track.append(ins2)  # 指定文字と空白を追加
-                    send_track = ""
+                    send_track, file = "", discord.File(id_conversion.image_search(id2 + 300))
                     for k in range(len(track)):
                         send_track += f"{k + 1}:{track[k]}  "
-                    tmp1[i] = await ins.channel.send(f"既出コース(Chosen Track)\n{send_track}")
-                    tmp2[i] = await ins.channel.send(file=discord.File(id_conversion.image_search(id2 + 300)))
+                    tmp1[i] = await ins.channel.send(f"既出コース(Chosen Track)\n{send_track}", file=file)
                     await ins.delete()  # 発言者のメッセージ削除
                     if i != 1:
                         await tmp1[i - 1].delete()  # botの古いメッセージ削除
-                        await tmp2[i - 1].delete()
                     select = ""
                 elif ins.content.startswith("-"):  # "-"で始まっている場合
                     for k in reversed(range(len(track))):  # 指定文字が既に記録されているか確認
@@ -313,53 +307,25 @@ async def on_message(ctx):
                     track.pop(-2)
                     await ins.channel.send(f"{cnt - 1}レース目 {change_track} の選択チームを変更したお＾ｑ＾")
                 if cnt > 12:
-                    await tmp3[j].delete()
-                    await tmp4[j].delete()
-                    make_table.import_track = track
-                    make_table.flag_war_start = False
-                    await ins.channel.send("記録を終了したお＾ｑ＾")
+                    await tmp2[j].delete()
+                    temp_track, temp_num = "", ""
+                    for i in range(len(track)):
+                        temp_track += f"{re.sub('[_*]', '', track[i])}, "
+                        if "__" in track[i]:
+                            temp_num += f"{i + 1}, "
+                    await ins.channel.send(f"記録を終了したお＾ｑ＾\n集計表作成テンプレート```コース名 [{temp_track[:-2]}]\n"
+                                           f"自チームの選択コース [{temp_num[:-2]}]\n日付 [{time}]```")
+                    constant.flag_war_start = False
             else:
                 if ins.content[0] in ["_", "+", "-"] and ins.content.split(" ")[0].lower() not in constant.commands:
                     await ins.channel.send("それはコース名じゃないお＾ｑ＾")
-
-    if ctx.content.split(" ")[0].lower() in ["_mt", "_maketable"]:  # 集計表作成コマンド
-        flag = 0
-        if make_table.import_track:
-            await ctx.channel.send("直近の_warstartからコースと日付データをインポートしますか＾ｑ＾？(Yes/No)")
-            while True:
-                yn = (await client.wait_for('message')).content
-                if yn.lower() == "yes":
-                    flag = 1
-                    break
-                elif yn.lower() == "no":
-                    break
-                else:
-                    await ctx.channel.send("Yes or Noで解答してね＾ｑ＾")
-        await ctx.channel.send(make_table.maketable_introduction(flag))
-
-        while True:
-            input = (await client.wait_for('message', check=user_check, timeout=600.0)).content
-            check, msg = make_table.maketable_check_input(input, flag)
-            if check:
-                await ctx.channel.send("集計表を作成中...")
-                await client.get_channel(constant.Result).send(make_table.make_table(input, flag))
-                await client.get_channel(constant.Result).send(file=discord.File('created_sheet.png'))
-                os.remove('created_sheet.png')
-                await ctx.channel.send("集計おつです＾ｑ＾\n集計表を作成したお＾ｑ＾")
-                return
-            elif input.lower() == "cancel":
-                await ctx.channel.send("集計表作成を中止したお＾ｑ＾")
-                return
-            else:
-                await ctx.channel.send(f"形式が違うお＾ｑ＾\n{msg}")
 
     if ctx.content.split(" ")[0].lower() in ["_et", "_elapsedtime"]:  # 現在の通話時間を表示
         if constant.call_time:
             bt, at = constant.call_time[0], datetime.now()
             td = round((at - bt).total_seconds())
-            msg = f"**```\n現在の通話時間：{td // 3600}時間{td % 3600 // 60}分{td % 3600 % 60}秒\n" \
-                  f"(通話開始時刻：{bt.strftime('%Y/%m/%d %H:%M:%S')})```**"
-            await ctx.channel.send(msg)
+            await ctx.channel.send(f"**```\n現在の通話時間：{td // 3600}時間{td % 3600 // 60}分{td % 3600 % 60}秒\n"
+                                   f"(通話開始時刻：{bt.strftime('%Y/%m/%d %H:%M:%S')})```**")
         else:
             await ctx.channel.send("通話が始まっていないお＾ｑ＾")
 
