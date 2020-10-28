@@ -307,14 +307,18 @@ async def on_message(ctx):
                     track.pop(-2)
                     await ins.channel.send(f"{cnt - 1}レース目 {change_track} の選択チームを変更したお＾ｑ＾")
                 if cnt > 12:
+                    await tmp1[i].delete(delay=240.0)
                     await tmp2[j].delete()
                     temp_track, temp_num = "", ""
                     for i in range(len(track)):
                         temp_track += f"{re.sub('[_*]', '', track[i])}, "
                         if "__" in track[i]:
                             temp_num += f"{i + 1}, "
-                    await ins.channel.send(f"記録を終了したお＾ｑ＾\n集計表作成テンプレート```コース名 [{temp_track[:-2]}]\n"
-                                           f"自チームの選択コース [{temp_num[:-2]}]\n日付 [{time}]```")
+                    await ins.channel.send("記録を終了したお＾ｑ＾\n集計表作成テンプレート```"
+                                           "自チームのメンバー [ふつきん,,,,,]\n自チームの各得点 [,,,,,]\n\n"
+                                           "敵チーム名 []\n対戦回数 [1]\n敵チームのメンバー [,,,,,]\n敵チームの各得点 [,,,,,]\n\n"
+                                           f"コース名 [{temp_track[:-2]}]\n自チームの選択コース [{temp_num[:-2]}]\n\n"
+                                           f"日付 [{time}]```")
                     constant.flag_war_start = False
             else:
                 if ins.content[0] in ["_", "+", "-"] and ins.content.split(" ")[0].lower() not in constant.commands:
