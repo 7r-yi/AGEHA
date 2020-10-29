@@ -37,15 +37,6 @@ image_lineup = "```diff\n画像出力コマンド一覧(先頭に'_'を付けて
                "NvKtheme1, NvKtheme2, TeamNvK1, TeamNvK2, TeamNvK3, George, joris, Futoopa, Mogi, Neochi, MokoMoko, " \
                "temee, naide, FutsuFamily, FutamiGahaku, isogasui, HentaiAGEHA, korosuzo, U-N-CHI\n```"
 
-flag_war_start = False
-with open('call_backup.json') as file:
-    call = json.load(file)
-if call['call_time'] is None:
-    call_time = []
-else:
-    call_time = [datetime.strptime(call['call_time'], '%Y-%m-%d %H:%M:%S.%f')]
-call_user = call['call_user']
-
 Futsukin = 164012913890164737
 Mochi = 246229232722640897
 Lchiki = 188884941654720513
@@ -73,3 +64,14 @@ Ageha_bot = 347812031216353283
 Bad_Num = -999
 
 Test = 345169020602941453
+
+flag_war_start = False
+clan_war_user = ["ふつきん", "", "", "", "", ""]
+enemy_clan = ""
+with open('call_backup.json') as file:
+    call = json.load(file)
+if call['call_time'] is None:
+    call_time = []
+else:
+    call_time = [datetime.strptime(call['call_time'], '%Y-%m-%d %H:%M:%S.%f')]
+call_user = call['call_user']

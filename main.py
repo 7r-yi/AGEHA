@@ -53,6 +53,13 @@ async def on_message(ctx):
         if id != constant.Bad_Num:
             await ctx.channel.send(file=discord.File(id_conversion.image_search(id)))
 
+    if len(ctx.raw_mentions) == 5 and ctx.channel.id == constant.Clan_war:  # 何かのメッセージが入力されたら実行
+        guild = client.get_guild(constant.Free_talk)
+        for i in range(5):
+            constant.clan_war_user[i + 1] = guild.get_member(ctx.raw_mentions[i]).display_name
+        if "vs" in ctx.content:
+            constant.enemy_clan = ctx.content.split("vs")[1].split("\n")[0].strip()
+
     if ctx.author.id == constant.Futsukin and "戦記事" in ctx.content:  # Futsukinがブログを更新した時
         await ctx.channel.send("ブログ更新おつです＾ｑ＾")
         await ctx.add_reaction('George:353552599070539777')
@@ -309,17 +316,22 @@ async def on_message(ctx):
                 if cnt > 12:
                     await tmp1[i].delete(delay=240.0)
                     await tmp2[j].delete()
-                    temp_track, temp_num = "", ""
+                    temp_name, temp_track, temp_num = "", "", ""
+                    for i in range(6):
+                        temp_name += f"{constant.clan_war_user[i]}, "
                     for i in range(len(track)):
                         temp_track += f"{re.sub('[_*]', '', track[i])}, "
                         if "__" in track[i]:
                             temp_num += f"{i + 1}, "
                     await ins.channel.send("記録を終了したお＾ｑ＾\n集計表作成テンプレート```"
-                                           "自チームのメンバー [ふつきん,,,,,]\n自チームの各得点 [,,,,,]\n\n"
-                                           "敵チーム名 []\n対戦回数 [1]\n敵チームのメンバー [,,,,,]\n敵チームの各得点 [,,,,,]\n\n"
+                                           f"自チームのメンバー [{temp_name[:-2]}]\n自チームの各得点 [, , , , , ]\n\n"
+                                           f"敵チーム名 [{constant.enemy_clan}]\n対戦回数 []\n"
+                                           f"敵チームのメンバー [, , , , , ]\n敵チームの各得点 [, , , , , ]\n\n"
                                            f"コース名 [{temp_track[:-2]}]\n自チームの選択コース [{temp_num[:-2]}]\n\n"
                                            f"日付 [{time}]```")
                     constant.flag_war_start = False
+                    constant.clan_war_user = ["ふつきん", "", "", "", "", ""]
+                    constant.enemy_clan = ""
             else:
                 if ins.content[0] in ["_", "+", "-"] and ins.content.split(" ")[0].lower() not in constant.commands:
                     await ins.channel.send("それはコース名じゃないお＾ｑ＾")
