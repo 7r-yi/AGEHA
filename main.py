@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 import json
 import random
-import concurrent.futures
+import asyncio.exceptions
 import constant
 import id_conversion
 import point_calculate
@@ -217,7 +217,7 @@ async def on_message(ctx):
                     break
                 else:
                     await ctx.channel.send(f"形式が違うお＾ｑ＾\n{error}")
-            except concurrent.futures.TimeoutError:
+            except asyncio.exceptions.TimeoutError:
                 flag = False
                 await ctx.channel.send("一定時間入力が無かったのでキャンセルされたお＾ｑ＾")
 
@@ -251,7 +251,7 @@ async def on_message(ctx):
                     break
                 else:
                     await ctx.channel.send(f"形式が違うお＾ｑ＾\n{error}")
-            except concurrent.futures.TimeoutError:
+            except asyncio.exceptions.TimeoutError:
                 flag = False
                 await ctx.channel.send("一定時間入力が無かったのでキャンセルされたお＾ｑ＾")
 
@@ -265,7 +265,7 @@ async def on_message(ctx):
         while cnt <= 12:  # 12回コースが記録されるまで
             try:
                 ins = await client.wait_for('message', check=bot_check, timeout=240.0)
-            except concurrent.futures.TimeoutError:
+            except asyncio.exceptions.TimeoutError:
                 await ctx.channel.send(f"{cnt}レース目のコース指示、入力し忘れてない？＾ｑ＾")
                 ins = await client.wait_for('message')
             ins2 = id_conversion.track_conversion(ins.content[1:])
