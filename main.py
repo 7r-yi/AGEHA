@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import re
 from datetime import datetime
+from pytz import timezone
 import json
 import random
 import asyncio.exceptions
@@ -338,7 +339,7 @@ async def on_message(ctx):
 
     if ctx.content.split(" ")[0].lower() in ["_et", "_elapsedtime"]:  # 現在の通話時間を表示
         if constant.call_time:
-            bt, at = constant.call_time[0], datetime.now()
+            bt, at = constant.call_time[0], datetime.now(timezone('UTC')).astimezone(timezone('Asia/Tokyo'))
             td = round((at - bt).total_seconds())
             await ctx.channel.send(f"**```\n現在の通話時間：{td // 3600}時間{td % 3600 // 60}分{td % 3600 % 60}秒\n"
                                    f"(通話開始時刻：{bt.strftime('%Y/%m/%d %H:%M:%S')})```**")
@@ -354,9 +355,9 @@ async def on_voice_state_update(_, before, after):
         constant.call_user -= 1
 
     if constant.call_user >= 2:
-        constant.call_time.append(datetime.now())
+        constant.call_time.append(datetime.now(timezone('UTC')).astimezone(timezone('Asia/Tokyo')))
     elif constant.call_user <= 1 and constant.call_time:  # 2人以上から1人以下になった場合
-        bt, at = constant.call_time[0], datetime.now()
+        bt, at = constant.call_time[0], datetime.now(timezone('UTC')).astimezone(timezone('Asia/Tokyo'))
         td = round((at - bt).total_seconds())
         msg = f"**```fix\n今回の通話時間：{td // 3600}時間{td % 3600 // 60}分{td % 3600 % 60}秒\n" \
               f"(通話開始時刻：{bt.strftime('%Y/%m/%d %H:%M:%S')})\n" \
