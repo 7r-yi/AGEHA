@@ -28,17 +28,7 @@ async def on_message(ctx):
     def bot_check(ctx_wait):
         return not ctx_wait.author.bot
 
-    if ctx.content.lower() in ["_rb", "_reboot"]:
-        if constant.call_time:
-            update = {"call_time": constant.call_time[0].strftime('%Y-%m-%d %H:%M:%S.%f'),
-                      "call_user": constant.call_user}
-            with open('call_backup.json', 'w') as file:
-                json.dump(update, file, ensure_ascii=False, indent=2)
-        await ctx.channel.send("再起動するお～＾ｑ＾")
-        await client.close()
-
     if ctx.content.lower() in ["_sd", "_shutdown"] and ctx.author.id == constant.Ren:
-        print("shutdown")
         update = {"call_time": None, "call_user": 0}
         with open('call_backup.json', 'w') as file:
             json.dump(update, file, ensure_ascii=False, indent=2)
@@ -48,6 +38,13 @@ async def on_message(ctx):
     if ctx.content.lower() in ["_cmd", "_command", "_help"]:  # コマンド一覧出力
         await ctx.channel.send(constant.command_lineup)
         await ctx.channel.send(constant.image_lineup)
+
+    if ctx.content.lower() in ["_save"] and constant.call_time:
+        update = {"call_time": constant.call_time[0].strftime('%Y-%m-%d %H:%M:%S.%f'),
+                  "call_user": constant.call_user}
+        with open('call_backup.json', 'w') as file:
+            json.dump(update, file, ensure_ascii=False, indent=2)
+        await ctx.channel.send("通話データをセーブしました")
 
     if ctx.content.startswith("_") and not constant.flag_war_start:  # 何かのメッセージが入力されたら実行
         id = id_conversion.id_search(ctx.content[1:])
