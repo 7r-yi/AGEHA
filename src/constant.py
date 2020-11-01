@@ -68,7 +68,7 @@ Test = 345169020602941453
 flag_war_start = False
 clan_war_user = ["ふつきん", "", "", "", "", ""]
 enemy_clan = ""
-with open('call_backup.json') as file:
+with open('src/call_backup.json') as file:
     call = json.load(file)
 if call['call_time'] is None:
     call_time = []
