@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import os
 import sys
-import constant
+from src import constant
 
 rm_emoji = dict.fromkeys(range(0x10000, sys.maxunicode + 1), '')
 

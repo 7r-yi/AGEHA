@@ -1,4 +1,4 @@
-from constant import Bad_Num
+from src.constant import Bad_Num
 
 
 def id_search(str):

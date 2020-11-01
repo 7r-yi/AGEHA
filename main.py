@@ -6,12 +6,7 @@ from pytz import timezone
 import json
 import random
 import asyncio.exceptions
-import constant
-import id_conversion
-import point_calculate
-import lounge_data
-import mmr_calculate
-import meigen_list
+from src import constant, id_conversion, lounge_data, mmr_calculate, point_calculate, meigen_list
 
 intents = discord.Intents.default()
 intents.members = True
@@ -28,7 +23,7 @@ async def on_message(ctx):
 
     if ctx.content.lower() in ["_sd", "_shutdown"] and ctx.author.id == constant.Ren:
         update = {"call_time": None, "call_user": 0}
-        with open('call_backup.json', 'w') as file:
+        with open('src/call_backup.json', 'w') as file:
             json.dump(update, file, ensure_ascii=False, indent=2)
         await ctx.channel.send("終了するお～＾ｑ＾")
         await client.close()
@@ -40,7 +35,7 @@ async def on_message(ctx):
     if ctx.content.lower() in ["_save"] and constant.call_time:
         update = {"call_time": constant.call_time[0].strftime('%Y-%m-%d %H:%M:%S.%f'),
                   "call_user": constant.call_user}
-        with open('call_backup.json', 'w') as file:
+        with open('src/call_backup.json', 'w') as file:
             json.dump(update, file, ensure_ascii=False, indent=2)
         await ctx.channel.send("通話データをセーブしました")
 
@@ -360,7 +355,7 @@ async def on_voice_state_update(_, before, after):
         await client.get_channel(constant.Hearing_only).send(msg)
         constant.call_time = []
         reset = {"call_time": None, "call_user": 0}
-        with open('call_backup.json', 'w') as file:
+        with open('src/call_backup.json', 'w') as file:
             json.dump(reset, file, ensure_ascii=False, indent=2)
 
 

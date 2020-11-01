@@ -3,7 +3,7 @@ import random
 import math
 from statistics import mean
 from itertools import combinations
-import lounge_data
+from src import lounge_data
 
 
 def averageMMR_introduction(type):
