@@ -12,7 +12,19 @@ rm_emoji = dict.fromkeys(range(0x10000, sys.maxunicode + 1), '')
 
 def road_spreadsheet(name):
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('SpreadsheetAPI.json', scope)
+    credential = {
+        "type": "service_account",
+        "project_id": os.environ['SHEET_PROJECT_ID'],
+        "private_key_id": os.environ['SHEET_PRIVATE_KEY_ID'],
+        "private_key": os.environ['SHEET_PRIVATE_KEY'],
+        "client_email": os.environ['SHEET_CLIENT_EMAIL'],
+        "client_id": os.environ['SHEET_CLIENT_ID'],
+        "auth_uri": os.environ['auth_uri'],
+        "token_uri": os.environ['token_uri'],
+        "auth_provider_x509_cert_url": os.environ['auth_provider_x509_cert_url'],
+        "client_x509_cert_url": os.environ['SHEET_CLIENT_X509_CERT_URL']
+    }
+    credentials = ServiceAccountCredentials.from_json_keyfile_dict(credential, scope)
     gc = gspread.authorize(credentials)
 
     return gc.open_by_key('1IPGK_kCgdqSLwcFjzgeLsRW7qV3MLCgcSBABdZHtK4o').worksheet(name)
