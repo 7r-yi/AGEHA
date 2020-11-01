@@ -11,5 +11,4 @@ __pycache__/
 .env
 futsukin_bougen.json
 futsukin_meigen.json
-SpreadsheetAPI.json
 AGEHABot_Run.vbs

@@ -1,6 +1,5 @@
 import discord
 import os
-from dotenv import load_dotenv
 import re
 from datetime import datetime
 from pytz import timezone
@@ -365,5 +364,4 @@ async def on_voice_state_update(_, before, after):
             json.dump(reset, file, ensure_ascii=False, indent=2)
 
 
-load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
-client.run(os.environ.get('TOKEN'))
+client.run(os.environ['TOKEN'])
