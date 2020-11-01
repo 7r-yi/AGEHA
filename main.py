@@ -32,13 +32,6 @@ async def on_message(ctx):
         await ctx.channel.send(constant.command_lineup)
         await ctx.channel.send(constant.image_lineup)
 
-    if ctx.content.lower() in ["_save"] and constant.call_time:
-        update = {"call_time": constant.call_time[0].strftime('%Y-%m-%d %H:%M:%S.%f'),
-                  "call_user": constant.call_user}
-        with open('src/call_backup.json', 'w') as file:
-            json.dump(update, file, ensure_ascii=False, indent=2)
-        await ctx.channel.send("通話データをセーブしました")
-
     if ctx.content.startswith("_") and not constant.flag_war_start:  # 何かのメッセージが入力されたら実行
         id = id_conversion.id_search(ctx.content[1:])
         if id != constant.Bad_Num:
@@ -346,6 +339,9 @@ async def on_voice_state_update(_, before, after):
 
     if constant.call_user >= 2:
         constant.call_time.append(datetime.now(timezone('UTC')).astimezone(timezone('Asia/Tokyo')))
+        update = {"call_time": constant.call_time[0].strftime('%Y-%m-%d %H:%M:%S.%f'), "call_user": constant.call_user}
+        with open('src/call_backup.json', 'w') as file:
+            json.dump(update, file, ensure_ascii=False, indent=2)
     elif constant.call_user <= 1 and constant.call_time:  # 2人以上から1人以下になった場合
         bt, at = constant.call_time[0], datetime.now(timezone('UTC')).astimezone(timezone('Asia/Tokyo'))
         td = round((at - bt).total_seconds())
