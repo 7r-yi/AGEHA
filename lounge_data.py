@@ -14,7 +14,7 @@ rm_emoji = dict.fromkeys(range(0x10000, sys.maxunicode + 1), '')
 def road_spreadsheet(name):
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     credential = {
-        "type": "service_account",
+        "type": 'service_account',
         "project_id": os.environ['PROJECT_ID'],
         "private_key_id": os.environ['PRIVATE_KEY_ID'],
         "private_key": os.environ['PRIVATE_KEY'],
