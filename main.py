@@ -37,7 +37,7 @@ async def on_message(ctx):
         if id != constant.Bad_Num:
             await ctx.channel.send(file=discord.File(id_conversion.image_search(id)))
 
-    if len(ctx.raw_mentions) == 5 and ctx.channel.id == constant.Clan_war:  # 何かのメッセージが入力されたら実行
+    if len(ctx.raw_mentions) >= 5 and ctx.channel.id == constant.Clan_war:  # 何かのメッセージが入力されたら実行
         guild = client.get_guild(constant.Free_talk)
         for i in range(5):
             constant.clan_war_user[i + 1] = guild.get_member(ctx.raw_mentions[i]).display_name
