@@ -21,7 +21,7 @@ command_lineup = "```diff\nコマンド一覧(先頭に'_'を付けてコマン�
                  "・ラウンジ結果から増減MMRを計算する : [cm *type], [ClacMMR *type]\n" \
                  "・現在の通話時間を表示する(通話中のみ) : [et], [ElapsedTime]\n" \
                  "・コマンド一覧を表示する : [cmd], [Command], [Help]\n" \
-                 "・Botを終了する(管理者のみ) : [st], [ShutDown]```"
+                 "・Botを終了する(管理者のみ) : [sd], [ShutDown]```"
 
 image_lineup = "```diff\n画像出力コマンド一覧(先頭に'_'を付けてコマンド実行)\n\n" \
                "★オリジナルコース\n" \
