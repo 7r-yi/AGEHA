@@ -18,8 +18,8 @@ async def on_message(ctx):
     def user_check(ctx_wait):
         return ctx.author.id == ctx_wait.author.id
 
-    def bot_check(ctx_wait):
-        return not ctx_wait.author.bot
+    if ctx.author.bot or ctx.content == "":  # Botのメッセージと無入力には反応させない
+        return
 
     if ctx.content.lower() in ["_sd", "_shutdown"] and ctx.author.id == constant.Ren:
         update = {"call_time": None, "call_user": 0}
@@ -248,7 +248,7 @@ async def on_message(ctx):
 
         while cnt <= 12:  # 12回コースが記録されるまで
             try:
-                ins = await client.wait_for('message', check=bot_check, timeout=240.0)
+                ins = await client.wait_for('message', timeout=240.0)
             except asyncio.exceptions.TimeoutError:
                 await ctx.channel.send(f"{cnt}レース目のコース指示、入力し忘れてない？＾ｑ＾")
                 ins = await client.wait_for('message')
@@ -316,7 +316,7 @@ async def on_message(ctx):
                     constant.flag_war_start = False
                     constant.clan_war_user = ["ふつきん", "", "", "", "", ""]
                     constant.enemy_clan = ""
-            else:
+            elif len(ins.content) >= 1:
                 if ins.content[0] in ["_", "+", "-"] and ins.content.split(" ")[0].lower() not in constant.commands:
                     await ins.channel.send("それはコース名じゃないお＾ｑ＾")
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 
-commands = ["_rb", "_reboot", "_sd", "_shutdown",
+commands = ["_sd", "_shutdown",
             "_cmd", "_command", "_help", "_mg", "_meigen", "_hs", "_helpsyuzo", "_et", "_elapsedtime",
             "_mmr", "_st", "_stats", "_ht", "_history", "_am", "_avemmr", "_cm", "_calcmmr",
             "_race", "_it", "_itemtable", "_ws", "_warstart", "_mt", "_maketable"]
@@ -9,7 +9,7 @@ commands = ["_rb", "_reboot", "_sd", "_shutdown",
 command_lineup = "```diff\nコマンド一覧(先頭に'_'を付けてコマンド実行)\n\n" \
                  "・交流戦中のコースを記録 : [ws], [WarStart]\n" \
                  "・コースの記録を中断(WarStart実行中のみ) : [we], [WarEnd]\n" \
-                 "・交流戦の集計表を作成 : [mt], [MakeTable]\n" \
+                 "(・交流戦の集計表を作成 : [mt], [MakeTable])\n" \
                  "・順位or点数からチーム総得点を計算 : [Race *num]\n" \
                  "・コースのスター&サンダーテーブル画像を表示 : [it *track], [ItemTable *track]\n" \
                  "・ふつきん名言ガチャを回す : [mg *num], [Meigen *num]\n" \
@@ -21,7 +21,6 @@ command_lineup = "```diff\nコマンド一覧(先頭に'_'を付けてコマン�
                  "・ラウンジ結果から増減MMRを計算する : [cm *type], [ClacMMR *type]\n" \
                  "・現在の通話時間を表示する(通話中のみ) : [et], [ElapsedTime]\n" \
                  "・コマンド一覧を表示する : [cmd], [Command], [Help]\n" \
-                 "・Botを再起動する : [rb], [ReBoot]\n" \
                  "・Botを終了する(管理者のみ) : [st], [ShutDown]```"
 
 image_lineup = "```diff\n画像出力コマンド一覧(先頭に'_'を付けてコマンド実行)\n\n" \
