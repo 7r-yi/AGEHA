@@ -18,6 +18,9 @@ async def on_message(ctx):
     def user_check(ctx_wait):
         return ctx.author.id == ctx_wait.author.id
 
+    def ng_check(ctx_wait):
+        return not (ctx_wait.author.bot or ctx_wait.content == "")
+
     if ctx.author.bot or ctx.content == "":  # Botのメッセージと無入力には反応させない
         return
 
@@ -248,7 +251,7 @@ async def on_message(ctx):
 
         while cnt <= 12:  # 12回コースが記録されるまで
             try:
-                ins = await client.wait_for('message', timeout=240.0)
+                ins = await client.wait_for('message', check=ng_check, timeout=240.0)
             except asyncio.exceptions.TimeoutError:
                 await ctx.channel.send(f"{cnt}レース目のコース指示、入力し忘れてない？＾ｑ＾")
                 ins = await client.wait_for('message')
