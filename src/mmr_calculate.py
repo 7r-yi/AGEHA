@@ -9,7 +9,7 @@ from src import lounge_data
 def averageMMR_introduction(type):
     str = f"{type}v{type}形式でチームの平均MMRとボーダー順位を計算するお＾ｑ＾(Cancelで作成中止)\n```"
     if type == 1:
-        str += "1.P1\n2.P2\n3.P3\n4.P4\n5.P5\n6.P6\n7.P7\n8.P8\n9.P9\n10.P10\n11.P11\n12.P12\n"
+        str += "1. P1\n2. P2\n3. P3\n4. P4\n5. P5\n6. P6\n7. P7\n8. P8\n9. P9\n10. P10\n11. P11\n12. P12\n"
     elif type == 2:
         str += "Team 1: P1 P2\nTeam 2: P3 P4\nTeam 3: P5 P6\nTeam 4: P7 P8\nTeam 5: P9 P10\nTeam 6: P11 P12\n"
     elif type == 3:
