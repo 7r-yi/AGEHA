@@ -26,23 +26,27 @@ def averageMMR_introduction(type):
 def averageMMR_check_input(str, type):
     msg = ""
 
-    if type == 1:
-        if len(re.findall(r'[1-9]\.|1[0-2]\.', str)) != 12:
-            msg += "プレイヤー数が間違っているかも？＾ｑ＾(1～12.の番号を付ける)\n"
-    else:
-        if len(re.findall(f'Team [1-{12 // type}]:', str)) != 12 // type:
-            msg += f"チーム数が間違っているかも？＾ｑ＾(Team 1～{12 // type}の番号を付ける)\n"
-    if "--" in str:
-        for i in range(1, 12 // type + 1):
-            if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(" ") != type - 1:
-                msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(空白1文字で区切る)\n"
-        if str.replace("[", "]").count("]") == 2:
-            if not 1 <= int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[1])) <= (12 // type):
-                msg += "自チーム番号が間違っているかも？＾ｑ＾\n"
+    try:
+        if type == 1:
+            if len(re.findall(r'[1-9]\.|1[0-2]\.', str)) != 12:
+                msg += "プレイヤー数が間違っているかも？＾ｑ＾(1～12.の番号を付ける)\n"
         else:
-            msg += "自チーム番号が記載されていないかも？＾ｑ＾([]で閉じる)\n"
-    else:
-        msg += "-------でチームリストと自チーム記入欄番号を区切ってね＾ｑ＾\n"
+            if len(re.findall(f'Team [1-{12 // type}]:', str)) != 12 // type:
+                msg += f"チーム数が間違っているかも？＾ｑ＾(Team 1～{12 // type}の番号を付ける)\n"
+        if "--" in str:
+            if type != 1:
+                for i in range(1, 12 // type + 1):
+                    if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(" ") != type - 1:
+                        msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(空白1文字で区切る)\n"
+            if str.replace("[", "]").count("]") == 2:
+                if not 1 <= int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[1])) <= (12 // type):
+                    msg += "自チーム番号が間違っているかも？＾ｑ＾\n"
+            else:
+                msg += "自チーム番号が記載されていないかも？＾ｑ＾([]で閉じる)\n"
+        else:
+            msg += "-------でチームリストと自チーム記入欄番号を区切ってね＾ｑ＾\n"
+    except:
+        msg = "何らかの入力エラーが発生したお＾ｑ＾"
 
     return (msg == ""), msg
 
@@ -81,42 +85,45 @@ def calcMMR_introduction(type):
 def calcMMR_check_input(str, type):
     team_num, msg = [], ""
 
-    if "[" in str:
-        loop = [1]
-        for i in range(3, 48 // type - 4, 4):
-            loop.append(i)
-        for i in loop:
-            team_num.append(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[i]))
+    try:
+        if "[" in str:
+            loop = [1]
+            for i in range(3, 48 // type - 4, 4):
+                loop.append(i)
+            for i in loop:
+                team_num.append(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[i]))
 
-    if str.count("[") == 24 // type - 1 and str.count("]") == 24 // type - 1:
-        for i in range(5, 48 // type - 2, 4):
-            yn = str.replace("[", "]").split("]")[i].lower()
-            if not (("yes" in yn) or ("no" in yn)):
-                msg += "タイの欄にYesまたはNoが記述されていないかも？＾ｑ＾\n"
-        if "--" in str:
-            if type != 1:
-                if len(re.findall(f'Team [1-{12 // type}]:', str)) != 12 // type:
-                    msg += f"チーム数が間違っているかも？＾ｑ＾(Team 1～{12 // type}の番号を付ける)\n"
-                for i in range(1, 12 // type + 1):
-                    if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(" ") != type - 1:
-                        msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(空白1文字で区切る)\n"
+        if str.count("[") == 24 // type - 1 and str.count("]") == 24 // type - 1:
+            for i in range(5, 48 // type - 2, 4):
+                yn = str.replace("[", "]").split("]")[i].lower()
+                if not (("yes" in yn) or ("no" in yn)):
+                    msg += "タイの欄にYesまたはNoが記述されていないかも？＾ｑ＾\n"
+            if "--" in str:
+                if type != 1:
+                    if len(re.findall(f'Team [1-{12 // type}]:', str)) != 12 // type:
+                        msg += f"チーム数が間違っているかも？＾ｑ＾(Team 1～{12 // type}の番号を付ける)\n"
+                    for i in range(1, 12 // type + 1):
+                        if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(" ") != type - 1:
+                            msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(空白1文字で区切る)\n"
+                    for i in range(len(team_num)):
+                        if not re.match(f'[1-{12 // type}]', team_num[i]):
+                            msg += "結果の番号が間違っているかも？＾ｑ＾"
+                else:
+                    if len(re.findall(r'[1-9]\.|1[0-2]\.', str)) != 12:
+                        msg += "プレイヤー数が間違っているかも？＾ｑ＾(1～12.の番号を付ける)\n"
                 for i in range(len(team_num)):
-                    if not re.match(f'[1-{12 // type}]', team_num[i]):
-                        msg += "結果の番号が間違っているかも？＾ｑ＾"
+                    if not re.match(f'[1-9]|1[0-2]', team_num[i]):
+                        msg += "結果の番号が間違っているかも？＾ｑ＾\n"
+                for i in range(len(team_num) - 1):
+                    for j in range(i + 1, len(team_num)):
+                        if team_num[i] == team_num[j]:
+                            msg += "結果の番号が重複しているかも？＾ｑ＾\n"
             else:
-                if len(re.findall(r'[1-9]\.|1[0-2]\.', str)) != 12:
-                    msg += "プレイヤー数が間違っているかも？＾ｑ＾(1～12.の番号を付ける)\n"
-            for i in range(len(team_num)):
-                if not re.match(f'[1-9]|1[0-2]', team_num[i]):
-                    msg += "結果の番号が間違っているかも？＾ｑ＾\n"
-            for i in range(len(team_num) - 1):
-                for j in range(i + 1, len(team_num)):
-                    if team_num[i] == team_num[j]:
-                        msg += "結果の番号が重複しているかも？＾ｑ＾\n"
+                msg += "-------でチームリストと結果欄を区切ってね＾ｑ＾\n"
         else:
-            msg += "-------でチームリストと結果欄を区切ってね＾ｑ＾\n"
-    else:
-        msg += "[]で閉じられていない箇所があるかも？＾ｑ＾\n"
+            msg += "[]で閉じられていない箇所があるかも？＾ｑ＾\n"
+    except:
+        msg = "何らかの入力エラーが発生したお＾ｑ＾"
 
     return (msg == ""), msg
 
