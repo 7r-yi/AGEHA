@@ -8,7 +8,9 @@ from src import lounge_data
 
 def averageMMR_introduction(type):
     str = f"{type}v{type}形式でチームの平均MMRとボーダー順位を計算するお＾ｑ＾(Cancelで作成中止)\n```"
-    if type == 2:
+    if type == 1:
+        str += "1.P1\n2.P2\n3.P3\n4.P4\n5.P5\n6.P6\n7.P7\n8.P8\n9.P9\n10.P10\n11.P11\n12.P12\n"
+    elif type == 2:
         str += "Team 1: P1 P2\nTeam 2: P3 P4\nTeam 3: P5 P6\nTeam 4: P7 P8\nTeam 5: P9 P10\nTeam 6: P11 P12\n"
     elif type == 3:
         str += "Team 1: P1 P2 P3\nTeam 2: P4 P5 P6\nTeam 3: P7 P8 P9\nTeam 4: P10 P11 P12\n"
@@ -16,7 +18,7 @@ def averageMMR_introduction(type):
         str += "Team 1: P1 P2 P3 P4\nTeam 2: P5 P6 P7 P8\nTeam 3: P9 P10 P11 P12\n"
     elif type == 6:
         str += "Team 1: P1 P2 P3 P4 P5 P6\nTeam 2: P7 P8 P9 P10 P11 P12\n"
-    str += "-----------------------------\nMy Team is [Team 1]```"
+    str += "-----------------------------\nMy Team Number is [1]```"
 
     return str
 
@@ -24,20 +26,23 @@ def averageMMR_introduction(type):
 def averageMMR_check_input(str, type):
     msg = ""
 
-    if len(re.findall(f'Team [1-{12 // type}]:', str)) != 12 // type:
-        msg += f"チーム数が間違っているかも？＾ｑ＾(Team 1～{12 // type}の番号を付ける)\n"
+    if type == 1:
+        if len(re.findall(r'[1-9]\.|1[0-2]\.', str)) != 12:
+            msg += "プレイヤー数が間違っているかも？＾ｑ＾(1～12.の番号を付ける)\n"
     else:
-        if "--" in str:
-            for i in range(1, 12 // type + 1):
-                if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(" ") != type - 1:
-                    msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(空白1文字で区切る)\n"
-            if str.replace("[", "]").count("]") == 2:
-                if not 1 <= int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[1])) <= (12 // type):
-                    msg += "自チーム番号が間違っているかも？＾ｑ＾\n"
-            else:
-                msg += "自チームが記載されていないかも？＾ｑ＾([]で閉じる)\n"
+        if len(re.findall(f'Team [1-{12 // type}]:', str)) != 12 // type:
+            msg += f"チーム数が間違っているかも？＾ｑ＾(Team 1～{12 // type}の番号を付ける)\n"
+    if "--" in str:
+        for i in range(1, 12 // type + 1):
+            if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(" ") != type - 1:
+                msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(空白1文字で区切る)\n"
+        if str.replace("[", "]").count("]") == 2:
+            if not 1 <= int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[1])) <= (12 // type):
+                msg += "自チーム番号が間違っているかも？＾ｑ＾\n"
         else:
-            msg += "-------でチームリストと自チーム記入欄を区切ってね＾ｑ＾\n"
+            msg += "自チーム番号が記載されていないかも？＾ｑ＾([]で閉じる)\n"
+    else:
+        msg += "-------でチームリストと自チーム記入欄番号を区切ってね＾ｑ＾\n"
 
     return (msg == ""), msg
 
@@ -172,8 +177,12 @@ def calculate_MMR_tie(p1, p2, type):
 
 def get_average_MMR(str, type):
     name, name_list, name_sort, player, all_player, mmr, team_mmr, no_mmr = [], [], [], [], "", [], [], []
-    for i in range(1, 12 // type + 1):
-        name_list.append(re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip())
+    if type == 1:
+        for i in range(1, 13):
+            name_list.append(re.sub(r'[1-9]\.|1[0-2]\.', "--", str).split("--")[i].strip())
+    else:
+        for i in range(1, 12 // type + 1):
+            name_list.append(re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip())
     for i in range(12 // type):
         for j in range(type):
             player.append(name_list[i].split(" ")[j])
@@ -238,11 +247,17 @@ def get_average_MMR(str, type):
             break
 
     msg = "```"
-    for i in range(0, 12, type):
-        msg += f"★ Team {team_link[team_mmr_sort[i // type]] + 1} : Average MMR {round(team_mmr_sort[i // type])} ★\n"
-        for j in range(type):
-            msg += f"{name_sort[i + j]} : MMR {name_link[name_sort[i + j]]}\n"
+    if type == 1:
+        for i in range(12):
+            msg += f"{team_link[team_mmr_sort[i]] + 1}. {name_sort[i]} : MMR {name_link[name_sort[i]]}\n"
         msg += "\n"
+    else:
+        for i in range(0, 12, type):
+            msg += f"★ Team {team_link[team_mmr_sort[i // type]] + 1} : " \
+                   f"Average MMR {round(team_mmr_sort[i // type])} ★\n"
+            for j in range(type):
+                msg += f"{name_sort[i + j]} : MMR {name_link[name_sort[i + j]]}\n"
+            msg += "\n"
     msg += f"Team {my_team}は{confirm_border}位以上でMMR増加確定、"
     if psblty_border is not None:
         msg += f"{psblty_border}位は勝利/敗北チーム次第で増加の可能性あり、"

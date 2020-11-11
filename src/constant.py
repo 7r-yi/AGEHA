@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 
-commands = ["_sd", "_shutdown",
+commands = ["_sda", "_shutdownageha",
             "_cmd", "_command", "_help", "_mg", "_meigen", "_hs", "_helpsyuzo", "_et", "_elapsedtime",
             "_mmr", "_st", "_stats", "_ht", "_history", "_am", "_avemmr", "_cm", "_calcmmr",
             "_race", "_it", "_itemtable", "_ws", "_warstart", "_mt", "_maketable"]
@@ -21,7 +21,7 @@ command_lineup = "```diff\nコマンド一覧(先頭に'_'を付けてコマン�
                  "・ラウンジ結果から増減MMRを計算する : [cm *type], [ClacMMR *type]\n" \
                  "・現在の通話時間を表示する(通話中のみ) : [et], [ElapsedTime]\n" \
                  "・コマンド一覧を表示する : [cmd], [Command], [Help]\n" \
-                 "・Botを終了する(管理者のみ) : [sd], [ShutDown]```"
+                 "・Botを終了する(管理者のみ) : [sda], [ShutDownAGEHA]```"
 
 image_lineup = "```diff\n画像出力コマンド一覧(先頭に'_'を付けてコマンド実行)\n\n" \
                "★オリジナルコース\n" \

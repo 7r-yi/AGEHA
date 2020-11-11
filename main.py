@@ -24,7 +24,7 @@ async def on_message(ctx):
     if ctx.author.bot or ctx.content == "":  # Botのメッセージと無入力には反応させない
         return
 
-    if ctx.content.lower() in ["_sd", "_shutdown"] and ctx.author.id == constant.Ren:
+    if ctx.content.lower() in ["_sda", "_shutdownageha"] and ctx.author.id == constant.Ren:
         update = {"call_time": None, "call_user": 0}
         with open('src/call_backup.json', 'w') as file:
             json.dump(update, file, ensure_ascii=False, indent=2)
@@ -181,14 +181,16 @@ async def on_message(ctx):
 
     if ctx.content.split(" ")[0].lower() in ["_am", "_avemmr"]:  # プレイヤーのMMRを表示
         type = ctx.content[ctx.content.find(" ") + 1:]
-        if re.fullmatch(r'[2346]', type[0]):
-            type, flag = int(type[0]), True
-            msg1 = await ctx.channel.send(mmr_calculate.averageMMR_introduction(type))
+        if re.fullmatch(r'[fF1]', type[0]):
+            type = 1
+        elif re.fullmatch(r'[2346]', type[0]):
+            type = int(type[0])
         else:
-            flag = False
-            msg1 = await ctx.channel.send("形式を入力してね＾ｑ＾\n>>> **_avemmr X**\nX = 2v2 / 3v3 / 4v4 / 6v6")
+            await ctx.channel.send("形式を入力してね＾ｑ＾\n>>> **_avemmr X**\nX = 1v1 / 2v2 / 3v3 / 4v4 / 6v6")
+            return
 
-        while flag:
+        msg1 = await ctx.channel.send(mmr_calculate.averageMMR_introduction(type))
+        while True:
             try:
                 input = (await client.wait_for('message', check=user_check, timeout=180.0)).content.replace("`", "")
                 check, error = mmr_calculate.averageMMR_check_input(input, type)
@@ -205,8 +207,8 @@ async def on_message(ctx):
                 else:
                     await ctx.channel.send(f"形式が違うお＾ｑ＾\n{error}")
             except asyncio.exceptions.TimeoutError:
-                flag = False
                 await ctx.channel.send("一定時間入力が無かったのでキャンセルされたお＾ｑ＾")
+                break
 
     if ctx.content.split(" ")[0].lower() in ["_cm", "_calcmmr"]:  # ラウンジ結果から増減MMRを計算
         type = ctx.content[ctx.content.find(" ") + 1:]
