@@ -1,13 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
-.idea/.gitignore
-.idea/Discord bot.iml
-.idea/dictionaries/
-.idea/inspectionProfiles/
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
+.idea/
 Backup/
 __pycache__/
-.env
 futsukin_bougen.json
 futsukin_meigen.json
+AGEHABot_Run.vbs
