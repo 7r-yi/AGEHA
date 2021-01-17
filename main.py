@@ -197,18 +197,20 @@ async def on_message(ctx):
                 if check:
                     msg2 = await ctx.channel.send("各チームの平均MMRを取得＆計算中...")
                     await ctx.channel.send(mmr_calculate.get_average_MMR(input, type))
-                    await msg1.delete()
                     await msg2.delete()
                     break
                 elif input.lower() == "cancel":
                     await ctx.channel.send("中止したお＾ｑ＾")
-                    await msg1.delete()
                     break
                 else:
                     await ctx.channel.send(f"形式が違うお＾ｑ＾\n{error}")
             except asyncio.exceptions.TimeoutError:
                 await ctx.channel.send("一定時間入力が無かったのでキャンセルされたお＾ｑ＾")
                 break
+            except:
+                await ctx.channel.send("サーバーとの通信エラーが発生したお＾ｑ＾")
+                break
+        await msg1.delete()
 
     if ctx.content.split(" ")[0].lower() in ["_cm", "_calcmmr"]:  # ラウンジ結果から増減MMRを計算
         type = ctx.content[ctx.content.find(" ") + 1:]
