@@ -336,6 +336,13 @@ async def on_message(ctx):
         else:
             await ctx.channel.send("通話が始まっていないお＾ｑ＾")
 
+    if ctx.content.split(" ")[0].lower() in ["_callreset"]:  # 通話データをリセット
+        constant.call_user, constant.call_time = 0, []
+        reset = {"call_time": None, "call_user": 0}
+        with open('src/call_backup.json', 'w') as file:
+            json.dump(reset, file, ensure_ascii=False, indent=2)
+        await ctx.channel.send("通話データをリセットしたお＾ｑ＾")
+
 
 @client.event
 async def on_voice_state_update(_, before, after):
