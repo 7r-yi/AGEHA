@@ -97,23 +97,23 @@ def split_name(input):
 
 
 def get_rank(mmr):
-    if mmr < 2000:
+    if mmr < 4000:
         return 'https://cdn.discordapp.com/emojis/731579735544430703.png'  # アイアン
-    elif 2000 <= mmr < 3500:
+    elif 4000 <= mmr < 5500:
         return 'https://cdn.discordapp.com/emojis/731579759712010320.png'  # ブロンズ
-    elif 3500 <= mmr < 5000:
+    elif 5500 <= mmr < 7000:
         return 'https://cdn.discordapp.com/emojis/731579781828575243.png'  # シルバー
-    elif 5000 <= mmr < 6500:
+    elif 7000 <= mmr < 8500:
         return 'https://cdn.discordapp.com/emojis/731579798111125594.png'  # ゴールド
-    elif 6500 <= mmr < 8000:
+    elif 8500 <= mmr < 10000:
         return 'https://cdn.discordapp.com/emojis/542204444302114826.png'  # プラチナ
-    elif 8000 <= mmr < 9500:
+    elif 10000 <= mmr < 11500:
         return 'https://cdn.discordapp.com/emojis/731579851802411068.png'  # サファイア
-    elif 9500 <= mmr < 11000:
+    elif 11500 <= mmr < 13000:
         return 'https://cdn.discordapp.com/emojis/731579813386780722.png'  # ダイヤモンド
-    elif 11000 <= mmr < 12500:
+    elif 13000 <= mmr < 14500:
         return 'https://cdn.discordapp.com/emojis/731597294914502737.png'  # マスター
-    elif 12500 <= mmr:
+    elif 14500 <= mmr:
         return 'https://cdn.discordapp.com/emojis/731579876846338161.png'  # グランドマスター
 
 
