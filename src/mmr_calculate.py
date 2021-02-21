@@ -149,7 +149,7 @@ def get_playerlist(str, type):
             if "(" in teams[i]:
                 name_list.append((teams[i])[teams[i].find(":") + 1: teams[i].rfind("(")].strip())
             else:
-                name.append((teams[i])[teams[i].find(":") + 1:].strip())
+                name_list.append((teams[i])[teams[i].find(":") + 1:].strip())
             for j in range(type):
                 name.append(name_list[i].split(",")[j].strip())
 
