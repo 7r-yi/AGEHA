@@ -139,11 +139,17 @@ def get_playerlist(str, type):
     if type == 1:
         teams = str.split("\n")
         for i in range(12):
-            name.append((teams[i])[teams[i].find(".") + 1: teams[i].rfind("(")].strip())
+            if "(" in teams[i]:
+                name.append((teams[i])[teams[i].find(".") + 1: teams[i].rfind("(")].strip())
+            else:
+                name.append((teams[i])[teams[i].find(".") + 1:].strip())
     else:
         teams = str.split("\n")
         for i in range(12 // type):
-            name_list.append((teams[i])[teams[i].find(":") + 1: teams[i].rfind("(")].strip())
+            if "(" in teams[i]:
+                name_list.append((teams[i])[teams[i].find(":") + 1: teams[i].rfind("(")].strip())
+            else:
+                name.append((teams[i])[teams[i].find(":") + 1:].strip())
             for j in range(type):
                 name.append(name_list[i].split(",")[j].strip())
 
