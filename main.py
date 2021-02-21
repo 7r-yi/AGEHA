@@ -179,25 +179,26 @@ async def on_message(ctx):
         else:
             await ctx.channel.send(lounge_data.help_input_introduction("history"))
 
-    if ctx.content.split(" ")[0].lower() in ["_am", "_avemmr"]:  # プレイヤーのMMRを表示
+    if ctx.content.split(" ")[0].lower() in ["_am", "_avemmr"]:
+        await ctx.channel.send("This command has changed. -> `_BorderRank *type`")
+
+    if ctx.content.split(" ")[0].lower() in ["_br", "_borderrank"]:  # ボーダー順位を表示
         type = ctx.content[ctx.content.find(" ") + 1:]
         if re.fullmatch(r'[fF1]', type[0]):
             type = 1
         elif re.fullmatch(r'[2346]', type[0]):
             type = int(type[0])
         else:
-            await ctx.channel.send("形式を入力してね＾ｑ＾\n>>> **_avemmr X**\nX = 1v1 / 2v2 / 3v3 / 4v4 / 6v6")
+            await ctx.channel.send("形式を入力してね＾ｑ＾\n>>> **_BorderRank X**\nX = 1v1 / 2v2 / 3v3 / 4v4 / 6v6")
             return
 
-        msg1 = await ctx.channel.send(mmr_calculate.averageMMR_introduction(type))
+        msg1 = await ctx.channel.send(mmr_calculate.borderrank_introduction(type))
         while True:
             try:
                 input = (await client.wait_for('message', check=user_check, timeout=180.0)).content.replace("`", "")
-                check, error = mmr_calculate.averageMMR_check_input(input, type)
+                check, error = mmr_calculate.borderrank_check_input(input, type)
                 if check:
-                    msg2 = await ctx.channel.send("各チームの平均MMRを取得＆計算中...")
-                    await ctx.channel.send(mmr_calculate.get_average_MMR(input, type))
-                    await msg2.delete()
+                    await ctx.channel.send(mmr_calculate.get_border_rank(input, type))
                     break
                 elif input.lower() == "cancel":
                     await ctx.channel.send("中止したお＾ｑ＾")
@@ -207,30 +208,26 @@ async def on_message(ctx):
             except asyncio.exceptions.TimeoutError:
                 await ctx.channel.send("一定時間入力が無かったのでキャンセルされたお＾ｑ＾")
                 break
-            except:
-                await ctx.channel.send("サーバーとの通信エラーが発生したお＾ｑ＾")
-                break
         await msg1.delete()
 
     if ctx.content.split(" ")[0].lower() in ["_cm", "_calcmmr"]:  # ラウンジ結果から増減MMRを計算
         type = ctx.content[ctx.content.find(" ") + 1:]
         if re.fullmatch(r'[fF1]', type[0]):
-            type, flag = 1, True
-            msg1 = await ctx.channel.send(mmr_calculate.calcMMR_introduction(type))
+            type = 1
         elif re.fullmatch(r'[2346]', type[0]):
-            type, flag = int(type[0]), True
-            msg1 = await ctx.channel.send(mmr_calculate.calcMMR_introduction(type))
+            type = int(type[0])
         else:
-            flag = False
-            msg1 = await ctx.channel.send("形式を入力してね＾ｑ＾\n>>> **_calcmmr X**\nX = FFA / 2v2 / 3v3 / 4v4 / 6v6")
+            await ctx.channel.send("形式を入力してね＾ｑ＾\n>>> **_calcmmr X**\nX = FFA / 2v2 / 3v3 / 4v4 / 6v6")
+            return
 
-        while flag:
+        msg1 = await ctx.channel.send(mmr_calculate.calcMMR_introduction(type))
+        while True:
             try:
                 input = (await client.wait_for('message', check=user_check, timeout=180.0)).content.replace("`", "")
                 check, error = mmr_calculate.calcMMR_check_input(input, type)
                 if check:
-                    msg2 = await ctx.channel.send("各プレイヤーのMMRを取得＆計算中...")
-                    player, tie = mmr_calculate.get_playerlist_and_tie(input, type)
+                    msg2 = await ctx.channel.send("MMRを計算中...")
+                    player, tie = mmr_calculate.get_playerlist(input, type)
                     data = lounge_data.get_lounge_MMR(player)
                     await ctx.channel.send(mmr_calculate.get_new_MMR(data, tie, type))
                     await msg1.delete()
@@ -243,8 +240,11 @@ async def on_message(ctx):
                 else:
                     await ctx.channel.send(f"形式が違うお＾ｑ＾\n{error}")
             except asyncio.exceptions.TimeoutError:
-                flag = False
                 await ctx.channel.send("一定時間入力が無かったのでキャンセルされたお＾ｑ＾")
+                break
+            except:
+                await ctx.channel.send("サーバーとの通信エラーが発生したお＾ｑ＾")
+                break
 
     if ctx.content.split(" ")[0].lower() in ["_ws", "_warstart"] and not constant.flag_war_start:  # 交流戦中の既出コース記録コマンド
         await ctx.add_reaction('⚔')

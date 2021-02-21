@@ -3,7 +3,7 @@ import json
 
 commands = ["_sda", "_shutdownageha",
             "_cmd", "_command", "_help", "_mg", "_meigen", "_hs", "_helpsyuzo", "_et", "_elapsedtime",
-            "_mmr", "_st", "_stats", "_ht", "_history", "_am", "_avemmr", "_cm", "_calcmmr",
+            "_mmr", "_st", "_stats", "_ht", "_history", "_br", "_borderrank", "_cm", "_calcmmr",
             "_race", "_it", "_itemtable", "_ws", "_warstart", "_mt", "_maketable"]
 
 command_lineup = "```diff\nコマンド一覧(先頭に'_'を付けてコマンド実行)\n\n" \
@@ -17,7 +17,7 @@ command_lineup = "```diff\nコマンド一覧(先頭に'_'を付けてコマン�
                  "・プレイヤーのMMRを取得する : [MMR *name]\n" \
                  "・プレイヤーのStatsを取得する : [st *name], [Stats *name]\n" \
                  "・プレイヤーのHistoryを取得する : [ht *name], [History *name]\n" \
-                 "・各チームの平均MMRとボーダー順位を計算する : [am *type], [AveMMR *type]\n" \
+                 "・指定チームのボーダー順位を計算する : [br *type], [BorderRank *type]\n" \
                  "・ラウンジ結果から増減MMRを計算する : [cm *type], [ClacMMR *type]\n" \
                  "・現在の通話時間を表示する(通話中のみ) : [et], [ElapsedTime]\n" \
                  "・コマンド一覧を表示する : [cmd], [Command], [Help]\n" \

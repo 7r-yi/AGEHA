@@ -6,38 +6,38 @@ from itertools import combinations
 from src import lounge_data
 
 
-def averageMMR_introduction(type):
-    str = f"{type}v{type}形式でチームの平均MMRとボーダー順位を計算するお＾ｑ＾(Cancelで作成中止)\n```"
+def borderrank_introduction(type):
+    str = f"{type}v{type}形式で指定チームのボーダー順位を計算するお＾ｑ＾(Cancelで作成中止)\n```"
     if type == 1:
-        str += "1. P1\n2. P2\n3. P3\n4. P4\n5. P5\n6. P6\n7. P7\n8. P8\n9. P9\n10. P10\n11. P11\n12. P12\n"
+        str += "1. P1 (MMR: xxxx)\n2. P2 (MMR: xxxx)\n3. P3 (MMR: xxxx)\n4. P4 (MMR: xxxx)\n" \
+               "5. P5 (MMR: xxxx)\n6. P6 (MMR: xxxx)\n7. P7 (MMR: xxxx)\n8. P8 (MMR: xxxx)\n" \
+               "9. P9 (MMR: xxxx)\n10. P10 (MMR: xxxx)\n11. P11 (MMR: xxxx)\n12. P12 (MMR: xxxx)\n"
     elif type == 2:
-        str += "Team 1: P1 P2\nTeam 2: P3 P4\nTeam 3: P5 P6\nTeam 4: P7 P8\nTeam 5: P9 P10\nTeam 6: P11 P12\n"
+        str += "Team 1: P1, P2 (MMR: xxxx)\nTeam 2: P3, P4 (MMR: xxxx)\nTeam 3: P5, P6 (MMR: xxxx)\n" \
+               "Team 4: P7, P8 (MMR: xxxx)\nTeam 5: P9, P10 (MMR: xxxx)\nTeam 6: P11, P12 (MMR: xxxx)\n"
     elif type == 3:
-        str += "Team 1: P1 P2 P3\nTeam 2: P4 P5 P6\nTeam 3: P7 P8 P9\nTeam 4: P10 P11 P12\n"
+        str += "Team 1: P1, P2, P3 (MMR: xxxx)\nTeam 2: P4, P5, P6 (MMR: xxxx)\n" \
+               "Team 3: P7, P8, P9 (MMR: xxxx)\nTeam 4: P10, P11, P12 (MMR: xxxx)\n"
     elif type == 4:
-        str += "Team 1: P1 P2 P3 P4\nTeam 2: P5 P6 P7 P8\nTeam 3: P9 P10 P11 P12\n"
+        str += "Team 1: P1, P2, P3, P4 (MMR: xxxx)\nTeam 2: P5, P6, P7, P8 (MMR: xxxx)\n" \
+               "Team 3: P9, P10, P11, P12 (MMR: xxxx)\n"
     elif type == 6:
-        str += "Team 1: P1 P2 P3 P4 P5 P6\nTeam 2: P7 P8 P9 P10 P11 P12\n"
-    str += "-----------------------------\nMy Team Number is [1]```"
+        str += "Team 1: P1, P2, P3, P4, P5, P6 (MMR: xxxx)\nTeam 2: P7, P8, P9, P10, P11, P12 (MMR: xxxx)\n"
+    str += "-----------------------------\nMy Number is [1]```"
 
     return str
 
 
-def averageMMR_check_input(str, type):
+def borderrank_check_input(str, type):
     msg = ""
 
     try:
-        if type == 1:
-            if len(re.findall(r'[1-9]\.|1[0-2]\.', str)) != 12:
-                msg += "プレイヤー数が間違っているかも？＾ｑ＾(1～12.の番号を付ける)\n"
-        else:
-            if len(re.findall(f'Team [1-{12 // type}]:', str)) != 12 // type:
-                msg += f"チーム数が間違っているかも？＾ｑ＾(Team 1～{12 // type}の番号を付ける)\n"
+        teams = str.split("\n")
+        for i in range(12 // type):
+            team_mmr = (teams[i])[teams[i].find("(") + 1: teams[i].rfind(")")].strip()
+            if "Unknown" not in team_mmr and re.sub(r'[^0-9]', "", team_mmr) == "":
+                msg += "MMRが記載されていないかも？＾ｑ＾\n"
         if "--" in str:
-            if type != 1:
-                for i in range(1, 12 // type + 1):
-                    if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(" ") != type - 1:
-                        msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(空白1文字で区切る)\n"
             if str.replace("[", "]").count("]") == 2:
                 if not 1 <= int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[1])) <= (12 // type):
                     msg += "自チーム番号が間違っているかも？＾ｑ＾\n"
@@ -54,28 +54,33 @@ def averageMMR_check_input(str, type):
 def calcMMR_introduction(type):
     str = f"{type}v{type}形式のレース結果から増減MMRを計算するお＾ｑ＾(Cancelで作成中止)\n```"
     if type == 1:
-        str += "1. P1\n2. P2\n3. P3\n4. P4\n5. P5\n6. P6\n7. P7\n8. P8\n9. P9\n10. P10\n11. P11\n12. P12\n" \
+        str += "1. P1 (MMR: xxxx)\n2. P2 (MMR: xxxx)\n3. P3 (MMR: xxxx)\n4. P4 (MMR: xxxx)\n" \
+               "5. P5 (MMR: xxxx)\n6. P6 (MMR: xxxx)\n7. P7 (MMR: xxxx)\n8. P8 (MMR: xxxx)\n" \
+               "9. P9 (MMR: xxxx)\n10. P10 (MMR: xxxx)\n11. P11 (MMR: xxxx)\n12. P12 (MMR: xxxx)\n" \
                "-----------------------------\n" \
                "1位 [1]\n2位 [2] [上とタイ? → No]\n3位 [3] [上とタイ? → No]\n" \
                "4位 [4] [上とタイ? → No]\n5位 [5] [上とタイ? → No]\n6位 [6] [上とタイ? → No]\n" \
                "7位 [7] [上とタイ? → No]\n8位 [8] [上とタイ? → No]\n9位 [9] [上とタイ? → No]\n" \
                "10位 [10] [上とタイ? → No]\n11位 [11] [上とタイ? → No]\n12位 [12] [上とタイ? → No]```"
     elif type == 2:
-        str += "Team 1: P1 P2\nTeam 2: P3 P4\nTeam 3: P5 P6\nTeam 4: P7 P8\nTeam 5: P9 P10\nTeam 6: P11 P12\n" \
+        str += "Team 1: P1, P2 (MMR: xxxx)\nTeam 2: P3, P4 (MMR: xxxx)\nTeam 3: P5, P6 (MMR: xxxx)\n" \
+               "Team 4: P7, P8 (MMR: xxxx)\nTeam 5: P9, P10 (MMR: xxxx)\nTeam 6: P11, P12 (MMR: xxxx)\n" \
                "-----------------------------\n" \
                "1位 [Team 1]\n2位 [Team 2] [上とタイ? → No]\n3位 [Team 3] [上とタイ? → No]\n" \
                "4位 [Team 4] [上とタイ? → No]\n5位 [Team 5] [上とタイ? → No]\n6位 [Team 6] [上とタイ? → No]```"
     elif type == 3:
-        str += "Team 1: P1 P2 P3\nTeam 2: P4 P5 P6\nTeam 3: P7 P8 P9\nTeam 4: P10 P11 P12\n" \
+        str += "Team 1: P1, P2, P3 (MMR: xxxx)\nTeam 2: P4, P5, P6 (MMR: xxxx)\n" \
+               "Team 3: P7, P8, P9 (MMR: xxxx)\nTeam 4: P10, P11, P12 (MMR: xxxx)\n" \
                "-----------------------------\n" \
                "1位 [Team 1]\n2位 [Team 2] [上とタイ? → No]\n" \
                "3位 [Team 3] [上とタイ? → No]\n4位 [Team 4] [上とタイ? → No]```"
     elif type == 4:
-        str += "Team 1: P1 P2 P3 P4\nTeam 2: P5 P6 P7 P8\nTeam 3: P9 P10 P11 P12\n" \
+        str += "Team 1: P1, P2, P3, P4 (MMR: xxxx)\nTeam 2: P5, P6, P7, P8 (MMR: xxxx)\n" \
+               "Team 3: P9, P10, P11, P12 (MMR: xxxx)\n" \
                "-----------------------------\n" \
                "1位 [Team 1]\n2位 [Team 2] [上とタイ? → No]\n3位 [Team 3] [上とタイ? → No]```"
     elif type == 6:
-        str += "Team 1: P1 P2 P3 P4 P5 P6\nTeam 2: P7 P8 P9 P10 P11 P12\n" \
+        str += "Team 1: P1, P2, P3, P4, P5, P6 (MMR: xxxx)\nTeam 2: P7, P8, P9, P10, P11, P12 (MMR: xxxx)\n" \
                "-----------------------------\n" \
                "1位 [Team 1]\n2位 [Team 2] [上とタイ? → No]```"
 
@@ -103,8 +108,8 @@ def calcMMR_check_input(str, type):
                     if len(re.findall(f'Team [1-{12 // type}]:', str)) != 12 // type:
                         msg += f"チーム数が間違っているかも？＾ｑ＾(Team 1～{12 // type}の番号を付ける)\n"
                     for i in range(1, 12 // type + 1):
-                        if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(" ") != type - 1:
-                            msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(空白1文字で区切る)\n"
+                        if re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip().count(",") != type - 1:
+                            msg += "プレイヤー名の数が間違っているかも？＾ｑ＾(カンマで区切る)\n"
                     for i in range(len(team_num)):
                         if not re.match(f'[1-{12 // type}]', team_num[i]):
                             msg += "結果の番号が間違っているかも？＾ｑ＾"
@@ -128,29 +133,19 @@ def calcMMR_check_input(str, type):
     return (msg == ""), msg
 
 
-def get_playerlist_and_tie(str, type):
-    name, name_list, rank, all_player, tie = [], [], [], "", []
-
-    loop = [1]
-    for i in range(3, 48 // type - 4, 4):
-        loop.append(i)
+def get_playerlist(str, type):
+    name, name_list, tie = [], [], []
 
     if type == 1:
-        for i in loop:
-            rank.append(int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[i])))
+        teams = str.split("\n")
         for i in range(12):
-            name.append(re.sub(r'[1-9]\.|1[0-2]\.', "--", str).split("--")[rank[i]].strip())
+            name.append((teams[i])[teams[i].find(".") + 1: teams[i].rfind("(")].strip())
     else:
-        for i in loop:
-            rank.append(int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[i])))
+        teams = str.split("\n")
         for i in range(12 // type):
-            name_list.append(re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[rank[i]].strip())
-        for i in range(12 // type):
+            name_list.append((teams[i])[teams[i].find(":") + 1: teams[i].rfind("(")].strip())
             for j in range(type):
-                name.append(name_list[i].split(" ")[j])
-
-    for i in range(12):
-        all_player += name[i] + ","
+                name.append(name_list[i].split(",")[j].strip())
 
     for i in range(5, 48 // type - 2, 4):
         if "yes" in str.replace("[", "]").split("]")[i].lower():
@@ -158,7 +153,7 @@ def get_playerlist_and_tie(str, type):
         else:
             tie.append(0)
 
-    return all_player[0:-1], tie
+    return ",".join(name), tie
 
 
 def calculate_MMR(winner, loser, type):
@@ -182,50 +177,22 @@ def calculate_MMR_tie(p1, p2, type):
         return -adv
 
 
-def get_average_MMR(str, type):
-    name, name_list, name_sort, player, all_player, mmr, team_mmr, no_mmr = [], [], [], [], "", [], [], []
-    if type == 1:
-        for i in range(1, 13):
-            name_list.append(re.sub(r'[1-9]\.|1[0-2]\.', "--", str).split("--")[i].strip())
-    else:
-        for i in range(1, 12 // type + 1):
-            name_list.append(re.sub(f'Team [1-{12 // type}]:', "--", str).split("--")[i].strip())
+def get_border_rank(str, type):
+    team_mmr, no_mmr, unknown_flag = [], [], False
+    teams = str.split("\n")
     for i in range(12 // type):
-        for j in range(type):
-            player.append(name_list[i].split(" ")[j])
-    for i in range(12):
-        all_player += player[i] + ","
+        team_mmr.append((teams[i])[teams[i].find("(") + 1: teams[i].rfind(")")].strip())
 
-    data = lounge_data.get_lounge_MMR(all_player[0:-1])
-    for i in range(0, 23, 2):
-        name.append(data[i])
-
-    for i in range(1, 24, 2):
-        mmr.append(data[i])
-    for i in range(12):
-        if mmr[i] == "Not Found":
-            mmr[i] = 0
+    for i in range(12 // type):
+        if "Unknown" in team_mmr[i]:
+            unknown_flag = True
+            team_mmr[i] = 0
             no_mmr.append(i)
         else:
-            mmr[i] = int(mmr[i])
-    for i in range(12):
-        if mmr[i] == 0:
-            mmr[i] = random.randint(max(mmr) - 2000, max(mmr))
-    for i in range(0, 12, type):  # チームの平均MMRを計算
-        team_mmr.append(mean(mmr[i: i + type]))
-
-    name_link = {}  # 名前と個人のMMRを紐付ける
-    for i in range(12):
-        name_link[name[i]] = mmr[i]
-
-    team_link = {}  # チーム番号とチームMMRを紐付ける
+            team_mmr[i] = int(re.sub(r'[^0-9]', "", team_mmr[i]))
     for i in range(12 // type):
-        team_link[team_mmr[i]] = i
-
-    team_mmr_sort = sorted(team_mmr, reverse=True)  # チームMMRを高い順に並べ替え
-    for i in range(12 // type):  # 名前をチームMMRの高い順に並べ替え
-        for j in range(type):
-            name_sort.append(name[team_link[team_mmr_sort[i]] * type + j])
+        if team_mmr[i] == 0:
+            team_mmr[i] = random.randint(max(team_mmr) - 2000, max(team_mmr))
 
     team_mmr_sub_win, team_mmr_sub_lose = [], []
     num = [i for i in range(len(team_mmr) - 1)]
@@ -253,25 +220,12 @@ def get_average_MMR(str, type):
             down_border = i + 1
             break
 
-    msg = "```"
-    if type == 1:
-        for i in range(12):
-            msg += f"{team_link[team_mmr_sort[i]] + 1}. {name_sort[i]} : MMR {name_link[name_sort[i]]}\n"
-        msg += "\n"
-    else:
-        for i in range(0, 12, type):
-            msg += f"★ Team {team_link[team_mmr_sort[i // type]] + 1} : " \
-                   f"Average MMR {round(team_mmr_sort[i // type])} ★\n"
-            for j in range(type):
-                msg += f"{name_sort[i + j]} : MMR {name_link[name_sort[i + j]]}\n"
-            msg += "\n"
-    msg += f"Team {my_team}は{confirm_border}位以上でMMR増加確定、"
+    msg = f"Team {my_team}は{confirm_border}位以上でMMR増加確定、"
     if psblty_border is not None:
         msg += f"{psblty_border}位は勝利/敗北チーム次第で増加の可能性あり、"
     msg += f"{down_border}位以下は減少確定(タイは考慮しない)\n"
-    for i in range(len(no_mmr)):
-        msg += f"※ {name[no_mmr[i]]} のMMRは取得できなかったので仮値で計算\n"
-    msg += "```"
+    if unknown_flag:
+        msg += "※MMR: Unknown のチームは仮値で計算\n"
 
     return msg
 
