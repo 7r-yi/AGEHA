@@ -136,15 +136,17 @@ def calcMMR_check_input(str, type):
 def get_playerlist(str, type):
     name, name_list, tie = [], [], []
 
+    teams = str.split("\n")
+    if "Room MMR" in teams[0]:
+        teams.pop(0)
+
     if type == 1:
-        teams = str.split("\n")
         for i in range(12):
             if "(" in teams[i]:
                 name.append((teams[i])[teams[i].find(".") + 1: teams[i].rfind("(")].strip())
             else:
                 name.append((teams[i])[teams[i].find(".") + 1:].strip())
     else:
-        teams = str.split("\n")
         for i in range(12 // type):
             if "(" in teams[i]:
                 name_list.append((teams[i])[teams[i].find(":") + 1: teams[i].rfind("(")].strip())
@@ -186,6 +188,8 @@ def calculate_MMR_tie(p1, p2, type):
 def get_border_rank(str, type):
     team_mmr, no_mmr, unknown_flag = [], [], False
     teams = str.split("\n")
+    if "Room MMR" in teams[0]:
+        teams.pop(0)
     for i in range(12 // type):
         team_mmr.append((teams[i])[teams[i].find("(") + 1: teams[i].rfind(")")].strip())
 
