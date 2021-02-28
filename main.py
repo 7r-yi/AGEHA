@@ -180,7 +180,7 @@ async def on_message(ctx):
             await ctx.channel.send(lounge_data.help_input_introduction("history"))
 
     if ctx.content.split(" ")[0].lower() in ["_am", "_avemmr"]:
-        await ctx.channel.send("コマンド名が変わったお＾ｑ＾ → `_BorderRank *type`")
+        await ctx.channel.send("This command has changed. -> `_BorderRank *type`")
 
     if ctx.content.split(" ")[0].lower() in ["_br", "_borderrank"]:  # ボーダー順位を表示
         type = ctx.content[ctx.content.find(" ") + 1:]
