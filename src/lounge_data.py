@@ -43,7 +43,7 @@ def get_lounge_name(name_id):
     elif name_id == constant.Mochi:
         return "Mochizy"
     elif name_id == constant.Lchiki:
-        return "Eru."
+        return "L."
     elif name_id == constant.K4I:
         return "K4I"
     elif name_id == constant.Ren:
