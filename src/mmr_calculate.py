@@ -134,26 +134,34 @@ def calcMMR_check_input(str, type):
 
 
 def get_playerlist(str, type):
-    name, name_list, tie = [], [], []
+    name, name_list, tie, rank = [], [], [], []
+
+    loop = [1]
+    for i in range(3, 48 // type - 4, 4):
+        loop.append(i)
 
     teams = str.split("\n")
     if "Room MMR" in teams[0]:
         teams.pop(0)
 
     if type == 1:
-        for i in range(12):
+        for i in loop:
+            rank.append(int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[i])) - 1)
+        for i in rank:
             if "(" in teams[i]:
                 name.append((teams[i])[teams[i].find(".") + 1: teams[i].rfind("(")].strip())
             else:
                 name.append((teams[i])[teams[i].find(".") + 1:].strip())
     else:
-        for i in range(12 // type):
+        for i in loop:
+            rank.append(int(re.sub(r'[^0-9]', "", str.replace("[", "]").split("]")[i])) - 1)
+        for i in rank:
             if "(" in teams[i]:
                 name_list.append((teams[i])[teams[i].find(":") + 1: teams[i].rfind("(")].strip())
             else:
                 name_list.append((teams[i])[teams[i].find(":") + 1:].strip())
             for j in range(type):
-                name.append(name_list[i].split(",")[j].strip())
+                name.append(name_list[int(len(name) / 2)].split(",")[j].strip())
 
     for i in range(5, 48 // type - 2, 4):
         if "yes" in str.replace("[", "]").split("]")[i].lower():
