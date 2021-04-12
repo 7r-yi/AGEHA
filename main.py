@@ -343,7 +343,7 @@ async def on_message(ctx):
             json.dump(reset, file, ensure_ascii=False, indent=2)
         await ctx.channel.send("通話データをリセットしたお＾ｑ＾")
 
-
+"""
 @client.event
 async def on_voice_state_update(_, before, after):
     if before.channel is None and after.channel is not None:
@@ -367,6 +367,6 @@ async def on_voice_state_update(_, before, after):
         reset = {"call_time": None, "call_user": 0}
         with open('src/call_backup.json', 'w') as file:
             json.dump(reset, file, ensure_ascii=False, indent=2)
-
+"""
 
 client.run(os.environ['TOKEN'])
