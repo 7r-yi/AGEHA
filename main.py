@@ -6,7 +6,7 @@ from pytz import timezone
 import json
 import random
 import asyncio.exceptions
-from src import constant, id_conversion, lounge_data, mmr_calculate, point_calculate, meigen_list
+from src import constant, id_conversion, lounge_data, mmr_calculate, point_calculate, meigen_list, make_table
 
 intents = discord.Intents.default()
 intents.members = True
@@ -326,6 +326,59 @@ async def on_message(ctx):
             elif len(ins.content) >= 1:
                 if ins.content[0] in ["_", "+", "-"] and ins.content.split(" ")[0].lower() not in constant.commands:
                     await ins.channel.send("それはコース名じゃないお＾ｑ＾")
+
+    async def delete_all(image_flag):
+        if image_flag:
+            os.remove('src/created_sheet.png')
+        await msg1.delete()
+        await msg2.delete()
+
+    Result = 318725712586473472
+    Test = 345169020602941453
+
+    if ctx.content.lower() in ["_mt", "_maketable"]:  # 集計表作成コマンド
+        msg1 = await ctx.channel.send(make_table.maketable_introduction())
+        while True:
+            try:
+                input = await client.wait_for('message', check=user_check, timeout=600.0)
+            except asyncio.exceptions.TimeoutError:
+                await msg1.delete()
+                await ctx.channel.send("一定時間入力が無かったのでキャンセルしたお＾ｑ＾")
+                return
+            check, error = make_table.maketable_check_input(input.content)
+            if check:
+                msg2 = await ctx.channel.send("集計表を作成中...")
+                try:
+                    title, flag_984 = make_table.make_table(input.content)
+                except:
+                    await ctx.channel.send("何らかのエラーが発生したため集計表作成を中止したお＾ｑ＾")
+                    await delete_all(False)
+                    return
+                if not flag_984:
+                    await ctx.channel.send("合計得点が984点じゃないけど、集計表の出力を続行しますか？＾ｑ＾(Yes/No)")
+                    while True:
+                        try:
+                            confirm = await client.wait_for('message', check=user_check, timeout=300.0)
+                        except asyncio.exceptions.TimeoutError:
+                            await delete_all(True)
+                            await ctx.channel.send("一定時間入力が無かったのでキャンセルしたお＾ｑ＾")
+                            return
+                        if confirm.content.lower() == "yes":
+                            break
+                        elif confirm.content.lower() == "no":
+                            await delete_all(True)
+                            await ctx.channel.send("集計表作成を中止したお＾ｑ＾")
+                            return
+                # await client.get_channel(Result).send(title, file=discord.File('src/created_sheet.png'))
+                await client.get_channel(Test).send(title, file=discord.File('src/created_sheet.png'))
+                await delete_all(True)
+                await ctx.channel.send(f"集計表を作成したお＾ｑ＾")
+                return
+            elif input.content.lower() == "cancel":
+                await ctx.channel.send("集計表作成を中止したお＾ｑ＾")
+                return
+            else:
+                await ctx.channel.send(f"形式が違います\n{error}")
 
     if ctx.content.split(" ")[0].lower() in ["_et", "_elapsedtime"]:  # 現在の通話時間を表示
         if constant.call_time:
