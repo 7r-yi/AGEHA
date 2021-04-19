@@ -369,8 +369,8 @@ async def on_message(ctx):
                             await delete_all(True)
                             await ctx.channel.send("集計表作成を中止したお＾ｑ＾")
                             return
-                # await client.get_channel(Result).send(title, file=discord.File('src/created_sheet.png'))
-                await client.get_channel(Test).send(title, file=discord.File('src/created_sheet.png'))
+                await client.get_channel(Result).send(title, file=discord.File('src/created_sheet.png'))
+                # await client.get_channel(Test).send(title, file=discord.File('src/created_sheet.png'))
                 await delete_all(True)
                 await ctx.channel.send(f"集計表を作成したお＾ｑ＾")
                 return
