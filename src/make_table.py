@@ -82,7 +82,7 @@ def make_table(input):
         for j in range(len(select_num)):
             if i + 1 == int(select_num[j]):
                 cell = sheet.cell(row=3 + i, column=12).coordinate
-                sheet[cell].font = Font(color='4BFF4B', size=26, name='Cataneo BT')
+                sheet[cell].font = Font(color='9C5BCD', size=26, name='Cataneo BT')
     date = input[17]
 
     if int(input[7]) == 1:
