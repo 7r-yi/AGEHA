@@ -8,6 +8,7 @@ def id_search(str):
           "rsl": 26, "rmp": 27, "ryv": 28, "rttc": 29, "rpps": 30, "rgv": 31, "rrrd": 32,
           "dyc": 33, "dea": 34, "ddd": 35, "dmc": 36, "dwgm": 37, "drr": 38, "diio": 39, "dhc": 40, "dbp": 41,
           "dcl": 42, "dww": 43, "dac": 44, "dnbc": 45, "drir": 46, "dsbs": 47, "dbb": 48,
+          "dpp": 49, "dtc": 50, "dcm": 51, "dcom": 52, "dtb": 53, "dsr": 54, "dsg": 55, "dnh": 56,
           "bs": 101, "ssk": 102, "dp": 103, "lc": 104, "rwt": 105, "rlm": 106, "rbc1": 107, "uu": 108,
           "futsukinroad": 201, "fr": 201, "mountmochi": 202, "mm": 202, "lchikicircuit": 203, "dlc": 203,
           "k4iharbor": 204, "kh": 204, "renpark": 205, "rrp": 205, "naotoshoals": 206, "ns": 206,
@@ -26,7 +27,7 @@ def id_search(str):
 
 
 def image_search(id):
-    if 1 <= id <= 48:
+    if 1 <= id <= 56:
         return f'./Race_tracks/track_{id}.png'
     elif 101 <= id <= 108:
         return f'./Battle_tracks/track_{id - 100}.png'
@@ -51,8 +52,8 @@ def track_conversion(pls):  # コースの大文字小文字などを修正
             return track_name.upper()  # 大文字に変換
         else:  # Edの場合
             return "Ed"
-    elif 17 <= id <= 48:  # レトロorDLCコースの場合
-        if id != 23 and id != 32 and id != 46:  # rRRy,rRRd,dRiRじゃない場合
+    elif 17 <= id <= 56:  # レトロorDLCコースの場合
+        if id != 23 and id != 32 and id != 46 and id != 52:  # rRRy,rRRd,dRiR,dCoMじゃない場合
             return track_name.capitalize().swapcase()  # 先頭の文字以外を大文字に変換
         elif id == 23:
             return "rRRy"
@@ -60,6 +61,8 @@ def track_conversion(pls):  # コースの大文字小文字などを修正
             return "rRRd"
         elif id == 46:
             return "dRiR"
+        elif id == 52:
+            return "dCoM"
     elif 101 <= id <= 108:  # バトルコースの場合
         if (101 <= id <= 104) or id == 108:  # rWT,rLM,rBC1じゃない場合
             return track_name.upper()
