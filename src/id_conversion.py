@@ -8,7 +8,7 @@ def id_search(str):
           "rsl": 26, "rmp": 27, "ryv": 28, "rttc": 29, "rpps": 30, "rgv": 31, "rrrd": 32,
           "dyc": 33, "dea": 34, "ddd": 35, "dmc": 36, "dwgm": 37, "drr": 38, "diio": 39, "dhc": 40, "dbp": 41,
           "dcl": 42, "dww": 43, "dac": 44, "dnbc": 45, "drir": 46, "dsbs": 47, "dbb": 48,
-          "bpp": 49, "btc": 50, "bcma": 51, "bcmo": 52, "btb": 53, "bsr": 54, "bsg": 55, "bnh": 56,
+          "bpp": 49, "btc": 50, "bcm0": 51, "bcma": 52, "btb": 53, "bsr": 54, "bsg": 55, "bnh": 56,
           "bs": 101, "ssk": 102, "dp": 103, "lc": 104, "rwt": 105, "rlm": 106, "rbc1": 107, "uu": 108,
           "futsukinroad": 201, "fr": 201, "mountmochi": 202, "mm": 202, "lchikicircuit": 203, "dlc": 203,
           "k4iharbor": 204, "kh": 204, "renpark": 205, "rrp": 205, "naotoshoals": 206, "ns": 206,
