@@ -61,8 +61,10 @@ def track_conversion(pls):  # コースの大文字小文字などを修正
             return "rRRd"
         elif id == 46:
             return "dRiR"
+        elif id == 51:
+            return "bCMa"
         elif id == 52:
-            return "dCoM"
+            return "bCMo"
     elif 101 <= id <= 108:  # バトルコースの場合
         if (101 <= id <= 104) or id == 108:  # rWT,rLM,rBC1じゃない場合
             return track_name.upper()
