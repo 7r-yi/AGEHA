@@ -41,6 +41,8 @@ def image_search(id):
         return f'./Race_tracks/track_{id - 500}.png'
     elif 1001 <= id <= 1999:
         return f'./Other_images/image_{id - 1000}.jpg'
+    else:
+        return f'./Other_images/No image.jpg'
 
 
 def track_conversion(pls):  # コースの大文字小文字などを修正
