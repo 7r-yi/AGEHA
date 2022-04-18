@@ -55,7 +55,7 @@ def track_conversion(pls):  # コースの大文字小文字などを修正
         else:  # Edの場合
             return "Ed"
     elif 17 <= id <= 56:  # レトロorDLCコースの場合
-        if id != 23 and id != 32 and id != 46 and id != 52:  # rRRy,rRRd,dRiR,dCoMじゃない場合
+        if id not in [23, 32, 46, 51, 52]:  # rRRyなどじゃない場合
             return track_name.capitalize().swapcase()  # 先頭の文字以外を大文字に変換
         elif id == 23:
             return "rRRy"
@@ -64,9 +64,9 @@ def track_conversion(pls):  # コースの大文字小文字などを修正
         elif id == 46:
             return "dRiR"
         elif id == 51:
-            return "bCMa"
-        elif id == 52:
             return "bCMo"
+        elif id == 52:
+            return "bCMa"
     elif 101 <= id <= 108:  # バトルコースの場合
         if (101 <= id <= 104) or id == 108:  # rWT,rLM,rBC1じゃない場合
             return track_name.upper()
