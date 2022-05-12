@@ -5,7 +5,7 @@ import json
 
 
 def road_spreadsheet(name):
-    file = json.load(open('SpreadsheetAPI.json', 'r'))
+    file = json.load(open('./src/SpreadsheetAPI.json', 'r'))
 
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     credential = {
@@ -30,10 +30,11 @@ def get_times(enemy):
     sheet = road_spreadsheet("チーム戦結果")
     data = sheet.get_all_values()
 
+    if enemy == "":
+        return ""
+
     for i in reversed(range(len(data))):
-        print(data[i][2].split("(")[0])
         if enemy == data[i][1].split("(")[0]:
-            print(data[i][1])
             try:
                 # 過去に2回以上対戦したことがある場合
                 if "(" in data[i][1]:
@@ -43,6 +44,6 @@ def get_times(enemy):
                     return 2
             # エラー処理
             except:
-                return -1
+                return "?"
     # 1回も対戦したことが無い場合
     return 1
