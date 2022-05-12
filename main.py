@@ -6,7 +6,8 @@ from pytz import timezone
 import json
 import random
 import asyncio.exceptions
-from src import constant, id_conversion, lounge_data, mmr_calculate, point_calculate, meigen_list, make_table
+from src import constant, clanwar_data, id_conversion, \
+    lounge_data, mmr_calculate, point_calculate, meigen_list, make_table
 
 intents = discord.Intents.default()
 intents.members = True
@@ -42,6 +43,7 @@ async def on_message(ctx):
 
     if len(ctx.raw_mentions) >= 5 and ctx.channel.id == constant.Clan_war:  # 何かのメッセージが入力されたら実行
         guild = client.get_guild(constant.Free_talk)
+        constant.clan_war_user[0] = guild.get_member(ctx.author.id).display_name
         for i in range(5):
             constant.clan_war_user[i + 1] = guild.get_member(ctx.raw_mentions[i]).display_name
         if "vs" in ctx.content:
@@ -316,12 +318,13 @@ async def on_message(ctx):
                             temp_num += f"{i + 1}, "
                     await ins.channel.send("記録を終了したお＾ｑ＾\n集計表作成テンプレート```"
                                            f"自チームのメンバー [{temp_name[:-2]}]\n自チームの各得点 [, , , , , ]\n\n"
-                                           f"敵チーム名 [{constant.enemy_clan}]\n対戦回数 []\n"
+                                           f"敵チーム名 [{constant.enemy_clan}]\n"
+                                           f"対戦回数 [{clanwar_data.get_times(constant.enemy_clan)}]\n"
                                            f"敵チームのメンバー [, , , , , ]\n敵チームの各得点 [, , , , , ]\n\n"
                                            f"コース名 [{temp_track[:-2]}]\n自チームの選択コース [{temp_num[:-2]}]\n\n"
                                            f"日付 [{time}]```")
                     constant.flag_war_start = False
-                    constant.clan_war_user = ["ふつきん", "", "", "", "", ""]
+                    constant.clan_war_user = ["", "", "", "", "", ""]
                     constant.enemy_clan = ""
             elif len(ins.content) >= 1:
                 if ins.content[0] in ["_", "+", "-"] and ins.content.split(" ")[0].lower() not in constant.commands:
