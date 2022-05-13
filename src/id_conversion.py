@@ -33,7 +33,7 @@ def image_search(id):
         return f'./Battle_tracks/track_{id - 100}.png'
     elif 201 <= id <= 299:
         return f'./NvK_tracks/track_{id - 200}.png'
-    elif 301 <= id <= 348:
+    elif 301 <= id <= 356:
         return f'./Shock_Star_tables/table_{id - 300}.jpg'
     elif 401 <= id <= 499:
         return f'./NvK_Mii_images/mii_{id - 400}.png'
