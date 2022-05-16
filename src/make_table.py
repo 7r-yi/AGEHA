@@ -92,11 +92,6 @@ def make_table(input):
 
     book.save(created_excel_pass)
 
-    if sum([int(i) for i in ally_point]) + sum([int(i) for i in enemy_point]) == 984:
-        flag_984 = True
-    else:
-        flag_984 = False
-
     excel = win32com.client.Dispatch("Excel.Application")
     file = excel.Workbooks.Open(os.path.abspath(created_excel_pass))
     file.Worksheets('6 vs 6').Select()
@@ -149,4 +144,4 @@ def make_table(input):
     os.remove(pdf_pass)
     os.remove(table_image_pass)
 
-    return send_str, flag_984
+    return send_str, sum([int(i) for i in ally_point]) + sum([int(i) for i in enemy_point])

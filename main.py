@@ -352,13 +352,14 @@ async def on_message(ctx):
             if check:
                 msg2 = await ctx.channel.send("集計表を作成中...")
                 try:
-                    title, flag_984 = make_table.make_table(input.content)
+                    title, total_pts = make_table.make_table(input.content)
                 except:
                     await ctx.channel.send("何らかのエラーが発生したため集計表作成を中止したお＾ｑ＾")
                     await delete_all(False)
                     return
-                if not flag_984:
-                    await ctx.channel.send("合計得点が984点じゃないけど、集計表の出力を続行しますか？＾ｑ＾(Yes/No)")
+                if total_pts != 984:
+                    await ctx.channel.send(f"合計得点が{total_pts}点になってるお＾ｑ＾\n"
+                                           f"984点になってないけど、集計表の出力を続行しますか？＾ｑ＾(Yes/No)")
                     while True:
                         try:
                             confirm = await client.wait_for('message', check=user_check, timeout=300.0)
