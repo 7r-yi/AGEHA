@@ -45,7 +45,11 @@ def get_times(enemy):
                         return int(data[i][1].split("(")[1][:-1])
                 # 過去に1回だけ対戦したことがある場合
                 else:
-                    return 2
+                    if data[i][2] != "":
+                        return 2
+                    # 実施前にスプレッドシートに記載されている場合は、その()内の数が正しい対戦回数
+                    else:
+                        return 1
             # エラー処理
             except:
                 return "?"
